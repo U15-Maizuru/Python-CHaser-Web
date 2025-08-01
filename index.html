@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>CHaserWeb</title>
+    <title>Python CHaser</title>
+    <link rel="icon" href="./images/favicon.ico">
     <!-- Google FontsからIBM Plex Sans JPとIBM Plex Monoを読み込み -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
     <!-- CodeMirrorのCSSを読み込み -->
@@ -336,7 +337,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>CHaserWeb</h1>
+        <h1>Python CHaser Web</h1>
     </div>
     <div class="container">
         <!-- 左側の列（エディタとコンソール） -->
@@ -356,7 +357,7 @@
             <div id="game-info">
                 <h2>ゲーム情報</h2>
                 <p id="turn-number">Turn: 150</p>
-                <p id="player-scores">Scores - あなた: 0, サンプルAI: 0</p>
+                <p id="player-scores">Scores プレイヤ: 0 -+- 0 : 対戦AI</p>
                 <div id="game-display">
                     <h2>ゲーム画面</h2>
                     <div id="game-grid"></div>
@@ -364,11 +365,11 @@
                     <div id="legend">
                         <h3>マス種類</h3>
                         <ul>
-                            <li><span class="legend-cell floor"></span> 床</li>
+                            <li><span class="legend-cell player0"></span> プレイヤ(Cool)</li>
+                            <li><span class="legend-cell player1"></span> 対戦AI(Hot)</li>
+                            <!-- <li><span class="legend-cell floor"></span> 床</li> -->
                             <li><span class="legend-cell block"></span> ブロック</li>
-                            <li><span class="legend-cell item"></span> アイテム（ハート）</li>
-                            <li><span class="legend-cell player0"></span> あなた</li>
-                            <li><span class="legend-cell player1"></span> サンプルAI</li>
+                            <li><span class="legend-cell item"></span> アイテム</li>
                         </ul>
                     </div>
                 </div>
@@ -637,7 +638,7 @@ class Game:
     def initialize_game(self):
         """ゲームに必要な変数を初期化する。"""
         self.game_map = []  # マップデータ
-        self.names = ["あなた", "サンプルAI"]  # プレイヤー名
+        self.names = ["プレイヤ", "対戦AI"]  # プレイヤー名
         self.chara_x = []  # 各プレイヤーのX座標
         self.chara_y = []  # 各プレイヤーのY座標
         self.score = [0, 0]  # スコア
@@ -894,11 +895,11 @@ class Game:
         elif self.life[0] == 0 and self.life[1] == 1:
             winner = 1  # 相手の勝ち
         elif self.life[0] == 1 and self.life[1] == 0:
-            winner = 0  # あなたの勝ち
+            winner = 0  # プレイヤーの勝ち
         elif self.score[0] == self.score[1]:
             winner = 2  # 引き分け
         elif self.score[0] > self.score[1]:
-            winner = 0  # スコアであなたの勝ち
+            winner = 0  # スコアでプレイヤーの勝ち
         else:
             winner = 1  # スコアで相手の勝ち
         return winner
@@ -962,7 +963,7 @@ class Client:
     def __init__(self, port=None, name=None, host=None):
         """クライアントの初期化を行う。"""
         self.game = Game()  # ゲームのインスタンスを生成
-        self.player_id = 0  # あなたはプレイヤー0（COOL）
+        self.player_id = 0  # プレイヤーはプレイヤー0（COOL）
         self.turn = 0  # 現在のターン
         self.game_over = False  # ゲーム終了フラグ
 
@@ -1000,9 +1001,9 @@ class Client:
                 print("\\nゲーム終了")
                 winner = self.game.judge_winner()
                 if winner == 0:
-                    print("あなたの勝ちです！")
+                    print("プレイヤの勝ちです！")
                 elif winner == 1:
-                    print("あなたの負けです。")
+                    print("プレイヤの負けです。")
                 else:
                     print("引き分けです。")
                 self.game_over = True
@@ -1426,7 +1427,7 @@ sys.excepthook = custom_excepthook
 
                 // ターン数とスコアを更新
                 document.getElementById('turn-number').textContent = `Turn: ${turn}`;
-                document.getElementById('player-scores').textContent = `Scores - あなた: ${scores[0]}, サンプルAI: ${scores[1]}`;
+                document.getElementById('player-scores').textContent = `Scores プレイヤ: ${scores[0]} -+- ${scores[1]} : 対戦AI`;
             }
 
             // 関数をグローバルスコープに配置
