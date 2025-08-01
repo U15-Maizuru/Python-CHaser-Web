@@ -524,6 +524,93 @@ class Game:
             "H:1,1\\n"
             "H:13,15\\n"
         )
+
+        def create_random_map(size_x=15, size_y=17, block_num=20, item_num=35, turn=150, mirror=True):
+            # 一様ノルム
+            def uniform_norm(pos, center):
+                return max(abs(pos[0] - center[0]), abs(pos[1] - center[1]))
+
+            def mirror_point(pos, size_x, size_y):
+                return (size_x - 1 - pos[0], size_y - 1 - pos[1])
+
+            # プレイヤー初期位置決定
+            center = (size_x // 2, size_y // 2)
+            while True:
+                pos0 = (random.randrange(size_x), random.randrange(size_y))
+                if uniform_norm(pos0, center) <= 1:
+                    continue
+                if pos0[0] < size_x // 2 or (pos0[0] == size_x // 2 and pos0[1] < size_y // 2):
+                    break
+            if mirror:
+                pos1 = mirror_point(pos0, size_x, size_y)
+            else:
+                while True:
+                    pos1 = (random.randrange(size_x), random.randrange(size_y))
+                    if uniform_norm(pos1, center) <= 1:
+                        continue
+                    if pos1[0] > size_x // 2 or (pos1[0] == size_x // 2 and pos1[1] > size_y // 2):
+                        break
+
+            # フィールド初期化
+            field = [[0 for _ in range(size_x)] for _ in range(size_y)]
+
+            # プレイヤー初期位置をフィールドに明示的に記録（値は0のまま、他と区別しない）
+            # ただし、他の配置と重複しないようにするため、以降の配置でチェックする
+
+            # ブロック配置
+            i = 0
+            while i < block_num:
+                pos = (random.randrange(size_x), random.randrange(size_y))
+                mirrorPos = mirror_point(pos, size_x, size_y)
+                # ブロック配置条件
+                if (pos != pos0 and pos != pos1 and field[pos[1]][pos[0]] != 2 and pos != center):
+                    field[pos[1]][pos[0]] = 2
+                    if mirror:
+                        if mirrorPos != pos0 and mirrorPos != pos1 and field[mirrorPos[1]][mirrorPos[0]] != 2 and mirrorPos != center:
+                            field[mirrorPos[1]][mirrorPos[0]] = 2
+                            i += 1
+                else:
+                    i -= 1 if i > 0 else 0
+                i += 1
+
+            # アイテム配置
+            i = 0
+            while i < item_num:
+                pos = (random.randrange(size_x), random.randrange(size_y))
+                mirrorPos = mirror_point(pos, size_x, size_y)
+                around_item_flag = True
+                if uniform_norm(pos0, pos) <= 1 or uniform_norm(pos1, pos) <= 1:
+                    around_item_flag = False
+                if (around_item_flag and
+                    pos != pos0 and pos != pos1 and
+                    field[pos[1]][pos[0]] != 3 and field[pos[1]][pos[0]] != 2 and pos != center):
+                    field[pos[1]][pos[0]] = 3
+                    if mirror:
+                        if (mirrorPos != pos0 and mirrorPos != pos1 and
+                            field[mirrorPos[1]][mirrorPos[0]] != 3 and field[mirrorPos[1]][mirrorPos[0]] != 2 and mirrorPos != center):
+                            field[mirrorPos[1]][mirrorPos[0]] = 3
+                            i += 1
+                else:
+                    i -= 1 if i > 0 else 0
+                i += 1
+            if mirror:
+                field[center[1]][center[0]] = 3
+
+            # マップデータ文字列生成
+            lines = []
+            lines.append("N:RandomMap")
+            lines.append(f"T:{turn}")
+            lines.append(f"S:{size_x},{size_y}")
+            for row in field:
+                lines.append("D:" + ",".join(str(cell) for cell in row))
+            # プレイヤー初期位置を明示的に2つとも出力
+            lines.append(f"H:{pos0[0]},{pos0[1]}")
+            lines.append(f"H:{pos1[0]},{pos1[1]}")
+            return "\\n".join(lines)
+
+        # ランダムマップ生成
+        self.map_data_str = create_random_map()
+        # print(self.map_data_str)  # デバッグ用にマップデータを出力
         # ゲームの初期化
         self.initialize_game()
 
