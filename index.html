@@ -100,7 +100,7 @@
 
         /* 右側の列（ゲーム画面） */
         .right-column {
-            flex: 0 0 40%;
+            flex: 0 0 35%;
             background-color: #252526;
             display: flex;
             flex-direction: column;
@@ -125,8 +125,8 @@
         /* ゲームグリッド */
         #game-grid {
             display: grid;
-            grid-template-columns: repeat(17, 30px);
-            grid-template-rows: repeat(19, 30px);
+            grid-template-columns: repeat(15, 27px);
+            grid-template-rows: repeat(17, 27px);
             gap: 1px;
             overflow: auto;
             scrollbar-width: thin;
@@ -135,8 +135,8 @@
 
         /* セルのサイズを変更 */
         .cell {
-            width: 29px;
-            height: 29px;
+            width: 26px;
+            height: 26px;
             background-color: #333;
         }
 
@@ -1404,10 +1404,12 @@ sys.excepthook = custom_excepthook
                 gameGrid.innerHTML = '';
 
                 // game_stateに基づいてセルを生成
-                for (let row of game_state) {
-                    for (let cell of row) {
+                for (let i = 1; i < game_state.length - 1; i++) {
+                    for (let j = 1; j < game_state[i].length - 1; j++) {
+                        let cell = game_state[i][j];
                         let cellDiv = document.createElement('div');
                         cellDiv.classList.add('cell');
+
                         if (cell === 0) {
                             cellDiv.classList.add('floor');
                         } else if (cell === 2) {
