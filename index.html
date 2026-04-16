@@ -412,11 +412,12 @@
         // pleyer.pyをエディタに読み込む（ユーザー提供のコード）
         editor.setValue(replaceTabsWithSpaces(`# player
 import argparse
-from lib.CHaser import * # lib/CHaser.py
+from lib.pyCHaser import * # lib/pyCHaser.py
 
 """
-このファイルを直接実行したときに実行する関数．
-実行するまでの経緯はファイルの下部に記載．
+
+【ライブラリの配置方法】
+    同じフォルダ内に「lib」フォルダを作成し、その中に「pyCHaser.py」ファイルを配置してください。
 
 get_ready() → 行動関数 → get_ready() → ... の順で必ず処理を行う．
 
@@ -1578,8 +1579,8 @@ sys.excepthook = custom_excepthook
                         pyodide.FS.mkdir('lib');
                     }
 
-                    // CHaser.pyを仮想ファイルシステムに書き込む
-                    pyodide.FS.writeFile('lib/CHaser.py', chaserCode);
+                    // pyCHaser.pyを仮想ファイルシステムに書き込む
+                    pyodide.FS.writeFile('lib/pyCHaser.py', chaserCode);
 
                     // ユーザーコードを変換して実行
                     pyodide.globals.set('user_code', userCode);
