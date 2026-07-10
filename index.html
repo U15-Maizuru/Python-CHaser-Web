@@ -646,6 +646,7 @@ class Game:
         self.life = [1, 1]  # 各プレイヤーの生存フラグ（1:生存、0:死亡）
         self.put_winner = 0  # 'put'による勝者の判定用
         self.turn_max = 150  # 最大ターン数
+        self.get_ready_called = False  # プレイヤーの準備完了フラグ
 
         # マップデータの解析とゲームの準備
         self.parse_map_data()
@@ -1075,6 +1076,13 @@ class Client:
             return None
 
         if gr_flag:
+            if not self.game.get_ready_called:
+                self.game.get_ready_called = True
+            else:
+                print("get_ready が２連続です")
+                self.game_over = True
+                return None
+
             if self.turn > 0:
                 # 相手のターンを処理
                 self.game.opponent_action()
@@ -1085,6 +1093,12 @@ class Client:
             values = self.game.get_nearby_information(self.player_id)
             return values[1:]  # [0]は生存フラグなので除外
         else:
+            if self.game.get_ready_called:
+                self.game.get_ready_called = False
+            else:
+                print("get_ready がありません")
+                self.game_over = True
+                return None
             try:
                 values = self.game.process_action(self.player_id, order_str)
             except Exception as e:
