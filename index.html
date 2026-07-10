@@ -2,7 +2,8 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>CHaserWeb</title>
+    <title>Python CHaser</title>
+    <link rel="icon" href="./images/favicon.ico">
     <!-- Google FontsからIBM Plex Sans JPとIBM Plex Monoを読み込み -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
     <!-- CodeMirrorのCSSを読み込み -->
@@ -99,7 +100,7 @@
 
         /* 右側の列（ゲーム画面） */
         .right-column {
-            flex: 0 0 40%;
+            flex: 0 0 35%;
             background-color: #252526;
             display: flex;
             flex-direction: column;
@@ -124,8 +125,8 @@
         /* ゲームグリッド */
         #game-grid {
             display: grid;
-            grid-template-columns: repeat(17, 30px);
-            grid-template-rows: repeat(19, 30px);
+            grid-template-columns: repeat(15, 27px);
+            grid-template-rows: repeat(17, 27px);
             gap: 1px;
             overflow: auto;
             scrollbar-width: thin;
@@ -134,29 +135,39 @@
 
         /* セルのサイズを変更 */
         .cell {
-            width: 29px;
-            height: 29px;
+            width: 26px;
+            height: 26px;
             background-color: #333;
         }
 
         .floor {
-            background-color: #E6E7E8;
+            background-color: #8fff8f;
+            background-image: url(./images/field.png);
+            background-size: cover;
         }
 
         .block {
             background-color: #777;
+            background-image: url(./images/wall.png);
+            background-size: cover;
         }
 
         .item {
-            background-color: #e91e63;
+            background-color: #f8f840;
+            background-image: url(./images/hart.png);
+            background-size: cover;
         }
 
         .player0 {
             background-color: #2196f3;
+            background-image: url(./images/cool.png);
+            background-size: cover;
         }
 
         .player1 {
-            background-color: #4caf50;
+            background-color: #e91e63;
+            background-image: url(./images/hot.png);
+            background-size: cover;
         }
 
         /* 隠しファイル入力 */
@@ -293,30 +304,40 @@
         }
 
         .legend-cell.floor {
-            background-color: #E6E7E8;
+            background-color: #8fff8f;
+            background-image: url(./images/field.png);
+            background-size: cover;
         }
 
         .legend-cell.block {
             background-color: #777;
+            background-image: url(./images/wall.png);
+            background-size: cover;
         }
 
         .legend-cell.item {
-            background-color: #e91e63;
+            background-color: #f8f840;
+            background-image: url(./images/hart.png);
+            background-size: cover;
         }
 
         .legend-cell.player0 {
             background-color: #2196f3;
+            background-image: url(./images/cool.png);
+            background-size: cover;
         }
 
         .legend-cell.player1 {
-            background-color: #4caf50;
+            background-color: #e91e63;
+            background-image: url(./images/hot.png);
+            background-size: cover;
         }
 
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>CHaserWeb</h1>
+        <h1>Python CHaser Web</h1>
     </div>
     <div class="container">
         <!-- 左側の列（エディタとコンソール） -->
@@ -336,7 +357,7 @@
             <div id="game-info">
                 <h2>ゲーム情報</h2>
                 <p id="turn-number">Turn: 150</p>
-                <p id="player-scores">Scores - あなた: 0, サンプルAI: 0</p>
+                <p id="player-scores">Scores プレイヤ: 0 -+- 0 : 対戦AI</p>
                 <div id="game-display">
                     <h2>ゲーム画面</h2>
                     <div id="game-grid"></div>
@@ -344,11 +365,11 @@
                     <div id="legend">
                         <h3>マス種類</h3>
                         <ul>
-                            <li><span class="legend-cell floor"></span> 床</li>
+                            <li><span class="legend-cell player0"></span> プレイヤ(Cool)</li>
+                            <li><span class="legend-cell player1"></span> 対戦AI(Hot)</li>
+                            <!-- <li><span class="legend-cell floor"></span> 床</li> -->
                             <li><span class="legend-cell block"></span> ブロック</li>
-                            <li><span class="legend-cell item"></span> アイテム（ハート）</li>
-                            <li><span class="legend-cell player0"></span> あなた</li>
-                            <li><span class="legend-cell player1"></span> サンプルAI</li>
+                            <li><span class="legend-cell item"></span> アイテム</li>
                         </ul>
                     </div>
                 </div>
@@ -524,13 +545,100 @@ class Game:
             "H:1,1\\n"
             "H:13,15\\n"
         )
+
+        def create_random_map(size_x=15, size_y=17, block_num=20, item_num=35, turn=150, mirror=True):
+            # 一様ノルム
+            def uniform_norm(pos, center):
+                return max(abs(pos[0] - center[0]), abs(pos[1] - center[1]))
+
+            def mirror_point(pos, size_x, size_y):
+                return (size_x - 1 - pos[0], size_y - 1 - pos[1])
+
+            # プレイヤー初期位置決定
+            center = (size_x // 2, size_y // 2)
+            while True:
+                pos0 = (random.randrange(size_x), random.randrange(size_y))
+                if uniform_norm(pos0, center) <= 1:
+                    continue
+                if pos0[0] < size_x // 2 or (pos0[0] == size_x // 2 and pos0[1] < size_y // 2):
+                    break
+            if mirror:
+                pos1 = mirror_point(pos0, size_x, size_y)
+            else:
+                while True:
+                    pos1 = (random.randrange(size_x), random.randrange(size_y))
+                    if uniform_norm(pos1, center) <= 1:
+                        continue
+                    if pos1[0] > size_x // 2 or (pos1[0] == size_x // 2 and pos1[1] > size_y // 2):
+                        break
+
+            # フィールド初期化
+            field = [[0 for _ in range(size_x)] for _ in range(size_y)]
+
+            # プレイヤー初期位置をフィールドに明示的に記録（値は0のまま、他と区別しない）
+            # ただし、他の配置と重複しないようにするため、以降の配置でチェックする
+
+            # ブロック配置
+            i = 0
+            while i < block_num:
+                pos = (random.randrange(size_x), random.randrange(size_y))
+                mirrorPos = mirror_point(pos, size_x, size_y)
+                # ブロック配置条件
+                if (pos != pos0 and pos != pos1 and field[pos[1]][pos[0]] != 2 and pos != center):
+                    field[pos[1]][pos[0]] = 2
+                    if mirror:
+                        if mirrorPos != pos0 and mirrorPos != pos1 and field[mirrorPos[1]][mirrorPos[0]] != 2 and mirrorPos != center:
+                            field[mirrorPos[1]][mirrorPos[0]] = 2
+                            i += 1
+                else:
+                    i -= 1 if i > 0 else 0
+                i += 1
+
+            # アイテム配置
+            i = 0
+            while i < item_num:
+                pos = (random.randrange(size_x), random.randrange(size_y))
+                mirrorPos = mirror_point(pos, size_x, size_y)
+                around_item_flag = True
+                if uniform_norm(pos0, pos) <= 1 or uniform_norm(pos1, pos) <= 1:
+                    around_item_flag = False
+                if (around_item_flag and
+                    pos != pos0 and pos != pos1 and
+                    field[pos[1]][pos[0]] != 3 and field[pos[1]][pos[0]] != 2 and pos != center):
+                    field[pos[1]][pos[0]] = 3
+                    if mirror:
+                        if (mirrorPos != pos0 and mirrorPos != pos1 and
+                            field[mirrorPos[1]][mirrorPos[0]] != 3 and field[mirrorPos[1]][mirrorPos[0]] != 2 and mirrorPos != center):
+                            field[mirrorPos[1]][mirrorPos[0]] = 3
+                            i += 1
+                else:
+                    i -= 1 if i > 0 else 0
+                i += 1
+            if mirror:
+                field[center[1]][center[0]] = 3
+
+            # マップデータ文字列生成
+            lines = []
+            lines.append("N:RandomMap")
+            lines.append(f"T:{turn}")
+            lines.append(f"S:{size_x},{size_y}")
+            for row in field:
+                lines.append("D:" + ",".join(str(cell) for cell in row))
+            # プレイヤー初期位置を明示的に2つとも出力
+            lines.append(f"H:{pos0[0]},{pos0[1]}")
+            lines.append(f"H:{pos1[0]},{pos1[1]}")
+            return "\\n".join(lines)
+
+        # ランダムマップ生成
+        self.map_data_str = create_random_map()
+        # print(self.map_data_str)  # デバッグ用にマップデータを出力
         # ゲームの初期化
         self.initialize_game()
 
     def initialize_game(self):
         """ゲームに必要な変数を初期化する。"""
         self.game_map = []  # マップデータ
-        self.names = ["あなた", "サンプルAI"]  # プレイヤー名
+        self.names = ["プレイヤ", "対戦AI"]  # プレイヤー名
         self.chara_x = []  # 各プレイヤーのX座標
         self.chara_y = []  # 各プレイヤーのY座標
         self.score = [0, 0]  # スコア
@@ -787,11 +895,11 @@ class Game:
         elif self.life[0] == 0 and self.life[1] == 1:
             winner = 1  # 相手の勝ち
         elif self.life[0] == 1 and self.life[1] == 0:
-            winner = 0  # あなたの勝ち
+            winner = 0  # プレイヤーの勝ち
         elif self.score[0] == self.score[1]:
             winner = 2  # 引き分け
         elif self.score[0] > self.score[1]:
-            winner = 0  # スコアであなたの勝ち
+            winner = 0  # スコアでプレイヤーの勝ち
         else:
             winner = 1  # スコアで相手の勝ち
         return winner
@@ -855,7 +963,7 @@ class Client:
     def __init__(self, port=None, name=None, host=None):
         """クライアントの初期化を行う。"""
         self.game = Game()  # ゲームのインスタンスを生成
-        self.player_id = 0  # あなたはプレイヤー0（COOL）
+        self.player_id = 0  # プレイヤーはプレイヤー0（COOL）
         self.turn = 0  # 現在のターン
         self.game_over = False  # ゲーム終了フラグ
 
@@ -893,9 +1001,9 @@ class Client:
                 print("\\nゲーム終了")
                 winner = self.game.judge_winner()
                 if winner == 0:
-                    print("あなたの勝ちです！")
+                    print("プレイヤの勝ちです！")
                 elif winner == 1:
-                    print("あなたの負けです。")
+                    print("プレイヤの負けです。")
                 else:
                     print("引き分けです。")
                 self.game_over = True
@@ -1296,10 +1404,12 @@ sys.excepthook = custom_excepthook
                 gameGrid.innerHTML = '';
 
                 // game_stateに基づいてセルを生成
-                for (let row of game_state) {
-                    for (let cell of row) {
+                for (let i = 1; i < game_state.length - 1; i++) {
+                    for (let j = 1; j < game_state[i].length - 1; j++) {
+                        let cell = game_state[i][j];
                         let cellDiv = document.createElement('div');
                         cellDiv.classList.add('cell');
+
                         if (cell === 0) {
                             cellDiv.classList.add('floor');
                         } else if (cell === 2) {
@@ -1319,7 +1429,7 @@ sys.excepthook = custom_excepthook
 
                 // ターン数とスコアを更新
                 document.getElementById('turn-number').textContent = `Turn: ${turn}`;
-                document.getElementById('player-scores').textContent = `Scores - あなた: ${scores[0]}, サンプルAI: ${scores[1]}`;
+                document.getElementById('player-scores').textContent = `Scores プレイヤ: ${scores[0]} -+- ${scores[1]} : 対戦AI`;
             }
 
             // 関数をグローバルスコープに配置
