@@ -56,18 +56,175 @@
             overflow: hidden;
         }
 
+        /* エディタタブ */
+        .editor-tabs {
+            display: flex;
+            background-color: #2d2d2d;
+            border-bottom: 1px solid #444;
+        }
+
+        .tab-button {
+            background-color: #2d2d2d;
+            color: #aaa;
+            border: none;
+            border-right: 1px solid #444;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: 'IBM Plex Sans JP', sans-serif;
+        }
+
+        .tab-button:hover {
+            background-color: #3c3c3c;
+        }
+
+        .tab-button.active {
+            background-color: #1e1e1e;
+            color: #fff;
+            font-weight: 600;
+        }
+
         /* エディタ部分 */
-        #editor {
+        .editor-pane {
             flex-grow: 1;
             overflow: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-pane.hidden {
+            display: none;
+        }
+
+        /* マップタブの説明バー */
+        .map-tab-hint {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 8px 10px;
+            background-color: #2d2d2d;
+            border-bottom: 1px solid #444;
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .map-tab-hint button {
+            flex-shrink: 0;
+            background-color: #3c3c3c;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'IBM Plex Sans JP', sans-serif;
+            font-size: 12px;
+        }
+
+        .map-tab-hint button:hover {
+            background-color: #555;
+        }
+
+        .map-use-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #ccc;
+            cursor: pointer;
+        }
+
+        /* マップエディタのツールバー */
+        .map-editor-toolbar {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding: 8px 10px;
+            background-color: #2d2d2d;
+            border-bottom: 1px solid #444;
+            color: #ccc;
+            font-size: 12px;
+        }
+
+        .map-editor-toolbar label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .map-editor-toolbar input[type="number"] {
+            width: 55px;
+            background-color: #1e1e1e;
+            color: #fff;
+            border: 1px solid #555;
+            border-radius: 3px;
+            padding: 2px 4px;
+        }
+
+        .map-editor-toolbar button {
+            background-color: #3c3c3c;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'IBM Plex Sans JP', sans-serif;
+            font-size: 12px;
+        }
+
+        .map-editor-toolbar button:hover {
+            background-color: #555;
+        }
+
+        .map-tool-group {
+            display: flex;
+            gap: 4px;
+        }
+
+        .map-tool-button.active {
+            background-color: #2196f3;
+        }
+
+        /* マップグリッドエディタ */
+        #map-editor-grid-wrap {
+            flex-grow: 1;
+            overflow: auto;
+            padding: 10px;
+            background-color: #1e1e1e;
+        }
+
+        #map-editor-grid {
+            display: grid;
+            gap: 1px;
+            width: max-content;
+        }
+
+        .map-edit-cell {
+            width: 20px;
+            height: 20px;
+            background-color: #333;
+            cursor: pointer;
+            box-sizing: border-box;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .map-edit-cell:hover {
+            outline: 2px solid #2196f3;
+            outline-offset: -2px;
         }
 
         /* ボタン群 */
         .button-group {
             display: flex;
+            align-items: center;
             padding: 10px;
             background-color: #2d2d2d;
             border-top: 1px solid #444;
+        }
+
+        .button-group .active-editor-label {
+            margin-left: auto;
+            color: #999;
+            font-size: 13px;
         }
 
         .button-group button {
@@ -100,7 +257,7 @@
 
         /* 右側の列（ゲーム画面） */
         .right-column {
-            flex: 0 0 35%;
+            flex: 0 0 40%;
             background-color: #252526;
             display: flex;
             flex-direction: column;
@@ -125,8 +282,8 @@
         /* ゲームグリッド */
         #game-grid {
             display: grid;
-            grid-template-columns: repeat(15, 27px);
-            grid-template-rows: repeat(17, 27px);
+            grid-template-columns: repeat(17, 30px);
+            grid-template-rows: repeat(19, 30px);
             gap: 1px;
             overflow: auto;
             scrollbar-width: thin;
@@ -135,36 +292,36 @@
 
         /* セルのサイズを変更 */
         .cell {
-            width: 26px;
-            height: 26px;
+            width: 29px;
+            height: 29px;
             background-color: #333;
         }
 
-        .floor {
+        .floor, .legend-cell.floor {
             background-color: #8fff8f;
             background-image: url(./images/field.png);
             background-size: cover;
         }
 
-        .block {
+        .block, .legend-cell.block {
             background-color: #777;
             background-image: url(./images/wall.png);
             background-size: cover;
         }
 
-        .item {
+        .item, .legend-cell.item {
             background-color: #f8f840;
             background-image: url(./images/hart.png);
             background-size: cover;
         }
 
-        .player0 {
+        .player0, .legend-cell.player0 {
             background-color: #2196f3;
             background-image: url(./images/cool.png);
             background-size: cover;
         }
 
-        .player1 {
+        .player1, .legend-cell.player1 {
             background-color: #e91e63;
             background-image: url(./images/hot.png);
             background-size: cover;
@@ -187,37 +344,8 @@
         }
 
         /* WebKitベースのブラウザ用スクロールバーのカスタマイズ */
-        /* 全体のスクロールバー */
-        body::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        body::-webkit-scrollbar-track {
-            background: #2d2d2d;
-        }
-
-        body::-webkit-scrollbar-thumb {
-            background-color: #555;
-            border-radius: 6px;
-            border: 3px solid #2d2d2d;
-        }
-
-        /* CodeMirrorのスクロールバー */
-        .CodeMirror::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        .CodeMirror::-webkit-scrollbar-track {
-            background: #2d2d2d;
-        }
-
-        .CodeMirror::-webkit-scrollbar-thumb {
-            background-color: #555;
-            border-radius: 6px;
-            border: 3px solid #2d2d2d;
-        }
-
-        /* その他の要素のスクロールバー */
+        body::-webkit-scrollbar,
+        .CodeMirror::-webkit-scrollbar,
         .left-column::-webkit-scrollbar,
         .right-column::-webkit-scrollbar,
         #console-output::-webkit-scrollbar,
@@ -225,6 +353,8 @@
             width: 12px;
         }
 
+        body::-webkit-scrollbar-track,
+        .CodeMirror::-webkit-scrollbar-track,
         .left-column::-webkit-scrollbar-track,
         .right-column::-webkit-scrollbar-track,
         #console-output::-webkit-scrollbar-track,
@@ -232,6 +362,8 @@
             background: #2d2d2d;
         }
 
+        body::-webkit-scrollbar-thumb,
+        .CodeMirror::-webkit-scrollbar-thumb,
         .left-column::-webkit-scrollbar-thumb,
         .right-column::-webkit-scrollbar-thumb,
         #console-output::-webkit-scrollbar-thumb,
@@ -303,36 +435,6 @@
             margin-right: 10px;
         }
 
-        .legend-cell.floor {
-            background-color: #8fff8f;
-            background-image: url(./images/field.png);
-            background-size: cover;
-        }
-
-        .legend-cell.block {
-            background-color: #777;
-            background-image: url(./images/wall.png);
-            background-size: cover;
-        }
-
-        .legend-cell.item {
-            background-color: #f8f840;
-            background-image: url(./images/hart.png);
-            background-size: cover;
-        }
-
-        .legend-cell.player0 {
-            background-color: #2196f3;
-            background-image: url(./images/cool.png);
-            background-size: cover;
-        }
-
-        .legend-cell.player1 {
-            background-color: #e91e63;
-            background-image: url(./images/hot.png);
-            background-size: cover;
-        }
-
     </style>
 </head>
 <body>
@@ -342,13 +444,50 @@
     <div class="container">
         <!-- 左側の列（エディタとコンソール） -->
         <div class="left-column">
-            <textarea id="editor"></textarea>
+            <div class="editor-tabs">
+                <button id="tab-player" class="tab-button active">プレイヤー</button>
+                <button id="tab-opponent" class="tab-button">対戦AI</button>
+                <button id="tab-map" class="tab-button">マップ</button>
+            </div>
+            <div id="editor-player" class="editor-pane">
+                <textarea id="editor"></textarea>
+            </div>
+            <div id="editor-opponent" class="editor-pane hidden">
+                <textarea id="editor-opponent-textarea"></textarea>
+            </div>
+            <div id="editor-map" class="editor-pane hidden">
+                <div class="map-tab-hint">
+                    <label class="map-use-toggle">
+                        <input type="checkbox" id="map-use-custom">
+                        このマップを対戦で使用する（オフの場合は毎回ランダム生成）
+                    </label>
+                    <button id="generate-random-map-button" type="button">ランダムマップを生成</button>
+                    <button id="clear-map-button" type="button">クリア</button>
+                </div>
+                <div class="map-editor-toolbar">
+                    <label>幅<input type="number" id="map-size-x" min="5" max="40" value="15"></label>
+                    <label>高さ<input type="number" id="map-size-y" min="5" max="40" value="17"></label>
+                    <button id="map-resize-button" type="button">サイズ変更</button>
+                    <label>ターン数<input type="number" id="map-turn-max" min="1" max="999" value="150"></label>
+                    <div class="map-tool-group" id="map-tool-group">
+                        <button class="map-tool-button active" data-tool="floor" type="button">床</button>
+                        <button class="map-tool-button" data-tool="block" type="button">ブロック</button>
+                        <button class="map-tool-button" data-tool="item" type="button">アイテム</button>
+                        <button class="map-tool-button" data-tool="cool" type="button">プレイヤ(Cool)</button>
+                        <button class="map-tool-button" data-tool="hot" type="button">対戦AI(Hot)</button>
+                    </div>
+                </div>
+                <div id="map-editor-grid-wrap">
+                    <div id="map-editor-grid"></div>
+                </div>
+            </div>
             <div class="button-group">
                 <button id="run-button">実行</button>
                 <button id="download-button">ダウンロード</button>
                 <button id="upload-button">アップロード</button>
                 <!-- ファイル入力要素（非表示） -->
                 <input type="file" id="file-input" accept=".py">
+                <span class="active-editor-label" id="active-editor-label">編集中: プレイヤー</span>
             </div>
             <div id="console-output"></div>
         </div>
@@ -386,8 +525,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/matchbrackets.min.js"></script>
 
     <script>
-        // CodeMirrorエディタの初期化
-        var editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+        // CodeMirrorエディタの初期化（プレイヤー用・対戦AI用の2つ。マップはグリッドエディタ）
+        var codeMirrorOptions = {
             mode: 'python',
             lineNumbers: true,
             indentUnit: 4,
@@ -402,21 +541,219 @@
                     cm.replaceSelection(spaces);
                 }
             },
+        };
+        var playerEditor = CodeMirror.fromTextArea(document.getElementById('editor'), codeMirrorOptions);
+        var opponentEditor = CodeMirror.fromTextArea(document.getElementById('editor-opponent-textarea'), codeMirrorOptions);
+
+        // ---- マップのビジュアル（グリッド）エディタ ----
+        // セルの値: 0=床, 2=ブロック, 3=アイテム。Cool/Hotの初期位置は別管理（セル値とは独立）。
+        var MAP_TOOL_CELL_VALUE = { floor: 0, block: 2, item: 3 };
+        var mapTool = 'floor';
+        var mapGrid = null;
+
+        function createEmptyMapGrid(sizeX, sizeY, turnMax) {
+            var cells = [];
+            for (var y = 0; y < sizeY; y++) {
+                cells.push(new Array(sizeX).fill(0));
+            }
+            return { sizeX: sizeX, sizeY: sizeY, turnMax: turnMax, cells: cells, coolPos: null, hotPos: null };
+        }
+
+        // グリッド状態 → N:/T:/S:/D:/H:/C: 形式のマップデータ文字列
+        function serializeMapToText() {
+            var lines = [];
+            lines.push('N:CustomMap');
+            lines.push('T:' + mapGrid.turnMax);
+            lines.push('S:' + mapGrid.sizeX + ',' + mapGrid.sizeY);
+            for (var y = 0; y < mapGrid.sizeY; y++) {
+                lines.push('D:' + mapGrid.cells[y].join(','));
+            }
+            if (mapGrid.coolPos) lines.push('C:' + mapGrid.coolPos.x + ',' + mapGrid.coolPos.y);
+            if (mapGrid.hotPos) lines.push('H:' + mapGrid.hotPos.x + ',' + mapGrid.hotPos.y);
+            return lines.join('\n');
+        }
+
+        // マップデータ文字列 → グリッド状態（アップロードやランダム生成結果の取り込みに使用）
+        function parseMapText(text) {
+            var sizeX = 15, sizeY = 17, turnMax = 150;
+            var rows = [];
+            var coolPos = null, hotPos = null;
+            (text || '').split(/\r?\n/).forEach(function(rawLine) {
+                var line = rawLine.trim();
+                if (line.length < 2 || line[1] !== ':') return;
+                var prefix = line[0];
+                var body = line.slice(2);
+                if (prefix === 'T') {
+                    var t = parseInt(body, 10);
+                    if (!isNaN(t)) turnMax = t;
+                } else if (prefix === 'S') {
+                    var s = body.split(',').map(Number);
+                    if (s.length === 2 && s.every(function(n) { return !isNaN(n); })) {
+                        sizeX = s[0]; sizeY = s[1];
+                    }
+                } else if (prefix === 'D') {
+                    rows.push(body.split(',').map(Number));
+                } else if (prefix === 'C') {
+                    var c = body.split(',').map(Number);
+                    if (c.length === 2) coolPos = { x: c[0], y: c[1] };
+                } else if (prefix === 'H') {
+                    var h = body.split(',').map(Number);
+                    if (h.length === 2) {
+                        // C:が無いままH:が2回現れる互換形式（旧ランダム生成など）は、
+                        // 1つ目をCoolの初期位置として扱う
+                        if (!coolPos) {
+                            coolPos = { x: h[0], y: h[1] };
+                        } else {
+                            hotPos = { x: h[0], y: h[1] };
+                        }
+                    }
+                }
+            });
+            var cells = [];
+            for (var y = 0; y < sizeY; y++) {
+                var srcRow = rows[y] || [];
+                var row = [];
+                for (var x = 0; x < sizeX; x++) {
+                    row.push(srcRow[x] !== undefined && !isNaN(srcRow[x]) ? srcRow[x] : 0);
+                }
+                cells.push(row);
+            }
+            mapGrid = { sizeX: sizeX, sizeY: sizeY, turnMax: turnMax, cells: cells, coolPos: coolPos, hotPos: hotPos };
+            document.getElementById('map-size-x').value = sizeX;
+            document.getElementById('map-size-y').value = sizeY;
+            document.getElementById('map-turn-max').value = turnMax;
+        }
+
+        function renderMapGrid() {
+            var container = document.getElementById('map-editor-grid');
+            container.style.gridTemplateColumns = 'repeat(' + mapGrid.sizeX + ', 20px)';
+            container.style.gridTemplateRows = 'repeat(' + mapGrid.sizeY + ', 20px)';
+            container.innerHTML = '';
+            var CELL_CLASS_BY_VALUE = { 0: 'floor', 2: 'block', 3: 'item' };
+            for (var y = 0; y < mapGrid.sizeY; y++) {
+                for (var x = 0; x < mapGrid.sizeX; x++) {
+                    var cell = document.createElement('div');
+                    cell.className = 'map-edit-cell ' + (CELL_CLASS_BY_VALUE[mapGrid.cells[y][x]] || 'floor');
+                    if (mapGrid.coolPos && mapGrid.coolPos.x === x && mapGrid.coolPos.y === y) {
+                        cell.className += ' player0';
+                    }
+                    if (mapGrid.hotPos && mapGrid.hotPos.x === x && mapGrid.hotPos.y === y) {
+                        cell.className += ' player1';
+                    }
+                    cell.title = '(' + x + ', ' + y + ')';
+                    cell.addEventListener('click', (function(cx, cy) {
+                        return function() { applyMapTool(cx, cy); };
+                    })(x, y));
+                    container.appendChild(cell);
+                }
+            }
+        }
+
+        function applyMapTool(x, y) {
+            if (mapTool === 'cool') {
+                mapGrid.coolPos = { x: x, y: y };
+            } else if (mapTool === 'hot') {
+                mapGrid.hotPos = { x: x, y: y };
+            } else {
+                mapGrid.cells[y][x] = MAP_TOOL_CELL_VALUE[mapTool];
+            }
+            renderMapGrid();
+        }
+
+        document.querySelectorAll('.map-tool-button').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                mapTool = btn.getAttribute('data-tool');
+                document.querySelectorAll('.map-tool-button').forEach(function(b) {
+                    b.classList.toggle('active', b === btn);
+                });
+            });
         });
+
+        document.getElementById('map-resize-button').addEventListener('click', function() {
+            var newX = Math.max(5, Math.min(40, parseInt(document.getElementById('map-size-x').value, 10) || mapGrid.sizeX));
+            var newY = Math.max(5, Math.min(40, parseInt(document.getElementById('map-size-y').value, 10) || mapGrid.sizeY));
+            var newCells = [];
+            for (var y = 0; y < newY; y++) {
+                var row = [];
+                for (var x = 0; x < newX; x++) {
+                    row.push((mapGrid.cells[y] && mapGrid.cells[y][x] !== undefined) ? mapGrid.cells[y][x] : 0);
+                }
+                newCells.push(row);
+            }
+            mapGrid.cells = newCells;
+            mapGrid.sizeX = newX;
+            mapGrid.sizeY = newY;
+            if (mapGrid.coolPos && (mapGrid.coolPos.x >= newX || mapGrid.coolPos.y >= newY)) mapGrid.coolPos = null;
+            if (mapGrid.hotPos && (mapGrid.hotPos.x >= newX || mapGrid.hotPos.y >= newY)) mapGrid.hotPos = null;
+            document.getElementById('map-size-x').value = newX;
+            document.getElementById('map-size-y').value = newY;
+            renderMapGrid();
+        });
+
+        document.getElementById('map-turn-max').addEventListener('change', function() {
+            var t = parseInt(this.value, 10);
+            mapGrid.turnMax = (!isNaN(t) && t > 0) ? t : mapGrid.turnMax;
+            this.value = mapGrid.turnMax;
+        });
+
+        document.getElementById('clear-map-button').addEventListener('click', function() {
+            mapGrid = createEmptyMapGrid(mapGrid.sizeX, mapGrid.sizeY, mapGrid.turnMax);
+            renderMapGrid();
+        });
+
+        // 既存のプレイヤー/対戦AIエディタ（CodeMirror）と同じインターフェースを持つ
+        // アダプタにすることで、タブ切り替え・アップロード・ダウンロードの
+        // 既存コードをそのまま流用できるようにする。
+        var mapEditorAdapter = {
+            getValue: function() { return serializeMapToText(); },
+            setValue: function(text) {
+                parseMapText(text);
+                renderMapGrid();
+                document.getElementById('map-use-custom').checked = true;
+            },
+            refresh: function() { renderMapGrid(); }
+        };
+
+        mapGrid = createEmptyMapGrid(15, 17, 150);
+        renderMapGrid();
+
+        var EDITOR_TAB_LABELS = { player: 'プレイヤー', opponent: '対戦AI', map: 'マップ' };
+        var EDITORS_BY_KEY = { player: playerEditor, opponent: opponentEditor, map: mapEditorAdapter };
+
+        // タブ切り替え（プレイヤー / 対戦AI / マップ）
+        var activeEditorKey = 'player';
+        function getActiveEditor() {
+            return EDITORS_BY_KEY[activeEditorKey];
+        }
+        function switchEditorTab(key) {
+            activeEditorKey = key;
+            Object.keys(EDITORS_BY_KEY).forEach(function(k) {
+                document.getElementById('editor-' + k).classList.toggle('hidden', k !== key);
+                document.getElementById('tab-' + k).classList.toggle('active', k === key);
+            });
+            document.getElementById('active-editor-label').textContent = '編集中: ' + EDITOR_TAB_LABELS[key];
+            // マップはPythonコードではないのでファイル種別を限定しない
+            document.getElementById('file-input').setAttribute('accept', key === 'map' ? '.txt,.map' : '.py');
+            getActiveEditor().refresh();
+        }
+        document.getElementById('tab-player').addEventListener('click', () => switchEditorTab('player'));
+        document.getElementById('tab-opponent').addEventListener('click', () => switchEditorTab('opponent'));
+        document.getElementById('tab-map').addEventListener('click', () => switchEditorTab('map'));
 
         // タブ文字をスペースに置き換える
         function replaceTabsWithSpaces(str) {
             return str.replace(/\t/g, '    ');
         }
 
-        // pleyer.pyをエディタに読み込む（ユーザー提供のコード）
-        editor.setValue(replaceTabsWithSpaces(`# player
+        // player.pyをエディタに読み込む（ユーザー提供のコード）
+        playerEditor.setValue(replaceTabsWithSpaces(`# player
 import argparse
-from lib.CHaser import * # lib/CHaser.py
+from lib.pyCHaser import * # lib/pyCHaser.py
 
 """
-このファイルを直接実行したときに実行する関数．
-実行するまでの経緯はファイルの下部に記載．
+
+【ライブラリの配置方法】
+    同じフォルダ内に「lib」フォルダを作成し、その中に「pyCHaser.py」ファイルを配置してください。
 
 get_ready() → 行動関数 → get_ready() → ... の順で必ず処理を行う．
 
@@ -482,6 +819,201 @@ if __name__ == "__main__":
     main(port=args.port, name=args.name, host=args.host)
 `));
 
+        // 対戦AIのデフォルトプログラムをエディタに読み込む
+        // このプログラムは他のプレイヤープログラム同様アップロードで差し替え可能．
+        // bots/ 以下にある各世代のプログラムファイルをそのままアップロードして対戦相手にできる．
+        opponentEditor.setValue(replaceTabsWithSpaces(`# opponent（デフォルトの対戦AI）
+import argparse
+from lib.pyCHaser import * # lib/pyCHaser.py
+
+"""
+デフォルトの対戦AI
+発見したものを記憶しながら．アイテムを回収しつつ隣接した相手にはputで応戦する．
+プレイヤー側と同じ形式のプログラムなので，このエディタの内容を書き換えたり，
+ファイルをアップロードして別の対戦AIに差し替えたりできる．
+
+get_ready() → 行動関数 → get_ready() → ... の順で必ず処理を行う．
+
+マスの情報は
+「Floor」:なにもない
+「Enemy」:相手
+「Block」:ブロック
+「Item」 :アイテム（ハート）
+"""
+
+player = None
+map_info = []  # 周辺情報を保存するリスト
+
+# 自己位置（デッドレコニング。原点は任意で構わない）
+my_x, my_y = 0, 0
+current_dir = Left  # 直前の移動方向
+memory = {}  # (x, y) -> Floor/Block/Item の実測記憶（Enemyは書かない）
+last_visit_turn = {}  # (x, y) -> 最後に訪れたターン
+turn_counter = 0
+
+# 記憶を頼りに追いかけるアイテムの探索距離の上限（遠すぎる記憶は無視して探索を優先）
+MEMORY_PURSUIT_RANGE = 8
+
+opposite = {Up: Down, Down: Up, Left: Right, Right: Left}
+orth_delta = {Up: (0, -1), Down: (0, 1), Left: (-1, 0), Right: (1, 0)}
+# 斜め方向に敵がいる場合の回避先候補（敵と反対側の直交方向を優先順に）
+diagonal_escapes = {
+    UpLeft: (Down, Right),
+    UpRight: (Down, Left),
+    DownLeft: (Up, Right),
+    DownRight: (Up, Left),
+}
+# 斜め方向にアイテムがある場合の接近先候補（アイテム側の直交方向を優先順に）
+diagonal_approaches = {
+    UpLeft: (Up, Left),
+    UpRight: (Up, Right),
+    DownLeft: (Down, Left),
+    DownRight: (Down, Right),
+}
+# 周囲9マス配列のインデックス（UpLeft〜DownRight）から座標オフセットへの対応表
+neighbor_offset = {i: (i % 3 - 1, i // 3 - 1) for i in range(9) if i != Center}
+
+
+def main(port, name, host):
+    global player, map_info
+
+    # サーバーと接続
+    player = Client(port=port, name=name, host=host)
+
+    while True:
+        """
+        ここから下に戦略プログラムを書く
+        """
+        global my_x, my_y, current_dir, memory, last_visit_turn, turn_counter
+
+        # 準備完了 & 周辺探査
+        map_info = player.get_ready()
+        turn_counter += 1
+
+        def move(direction):
+            global my_x, my_y, current_dir
+            player.walk(direction)
+            dx, dy = orth_delta[direction]
+            last_visit_turn[(my_x + dx, my_y + dy)] = turn_counter
+            my_x += dx
+            my_y += dy
+            current_dir = direction
+
+        def remember(x, y, value):
+            # Enemyは一時的な情報なので記憶に残さない（実際の床情報を失ってしまうため）
+            if value != Enemy:
+                memory[(x, y)] = value
+
+        def step_toward(target):
+            # targetへ向けて1歩進められればTrueを返す。
+            # 安全性は必ず「このターンの実測値map_info」で判定し、記憶（古い情報）は使わない。
+            tx, ty = target
+            dx, dy = tx - my_x, ty - my_y
+            if abs(dx) > abs(dy):
+                primary, secondary = "h", "v"
+            elif abs(dy) > abs(dx):
+                primary, secondary = "v", "h"
+            else:
+                primary, secondary = ("h", "v") if current_dir in (Left, Right) else ("v", "h")
+
+            def axis_dir(axis):
+                if axis == "h":
+                    return Right if dx > 0 else Left if dx < 0 else None
+                return Down if dy > 0 else Up if dy < 0 else None
+
+            for direction in (axis_dir(primary), axis_dir(secondary)):
+                if direction is not None and map_info[direction] in (Floor, Item):
+                    move(direction)
+                    return True
+            return False
+
+        def attack_adjacent_enemy():
+            for direction in (Up, Down, Right, Left):
+                if map_info[direction] == Enemy:
+                    player.put(direction)
+                    return True
+            return False
+
+        def evade_diagonal_enemy():
+            for diagonal, escapes in diagonal_escapes.items():
+                if map_info[diagonal] == Enemy:
+                    for escape_dir in escapes:
+                        if map_info[escape_dir] != Block:
+                            move(escape_dir)
+                            return True
+            return False
+
+        def grab_visible_item():
+            for direction in (Up, Down, Right, Left):
+                if map_info[direction] == Item:
+                    move(direction)
+                    return True
+            for diagonal, approaches in diagonal_approaches.items():
+                if map_info[diagonal] == Item:
+                    for approach_dir in approaches:
+                        if map_info[approach_dir] != Block:
+                            move(approach_dir)
+                            return True
+            return False
+
+        def wander():
+            # アイテムが無い場合はブロックがない方向に進む（直前の後退方向は避ける）
+            legal_moves = [
+                direction
+                for direction in (Up, Down, Left, Right)
+                if map_info[direction] != Block and current_dir != opposite[direction]
+            ]
+            if legal_moves:
+                def visit_rank(direction):
+                    dx, dy = orth_delta[direction]
+                    return last_visit_turn.get((my_x + dx, my_y + dy), -1)
+
+                best = min(visit_rank(direction) for direction in legal_moves)
+                best_moves = [direction for direction in legal_moves if visit_rank(direction) == best]
+                move(random.choice(best_moves))
+            else:
+                # 進めない場合は後退
+                move(opposite[current_dir])
+
+        # --- 記憶を更新（無料の観測データのみ使用） ---
+        for index, (dx, dy) in neighbor_offset.items():
+            remember(my_x + dx, my_y + dy, map_info[index])
+
+        # プレイヤーが隣接している場合はput（最優先）
+        if attack_adjacent_enemy():
+            continue
+
+        # 斜めに相手がいる場合は回避
+        if evade_diagonal_enemy():
+            continue
+
+        # アイテム優先（直接見えているもの、直交・斜め）
+        if grab_visible_item():
+            continue
+
+        # 既知のアイテムが無ければ探索
+        wander()
+
+"""
+        ここから上に戦略プログラムを書く
+"""
+
+
+"""
+python opponent.py のようにこのファイルを直接実行すると，
+__name__ は "__main__" となる．これを利用して main() を実行する．
+"""
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-p', '--port', default=2010)
+    parser.add_argument('-n', '--name', default='opponent')
+    parser.add_argument('-i', '--host', default='localhost')
+
+    args = parser.parse_args()
+
+    main(port=args.port, name=args.name, host=args.host)
+`));
+
         let pyodideReadyPromise = loadPyodide();
 
         // タイマーIDとゲーム実行フラグの定義
@@ -515,122 +1047,112 @@ M_CHARA = 1  # キャラクター
 M_BLOCK = 2  # ブロック
 M_ITEM = 3   # アイテム（ハート）
 
+# アップロードされたカスタムマップデータ。Noneならランダムマップを生成する。
+_custom_map_data = None
+
+
+def set_custom_map(map_data_str):
+    """アップロードされたマップデータを設定する。Noneまたは空文字ならランダム生成に戻す。"""
+    global _custom_map_data
+    _custom_map_data = map_data_str if map_data_str else None
+
+
+def generate_random_map_data(size_x=15, size_y=17, block_num=20, item_num=35, turn=150, mirror=True):
+    """ランダムなマップデータ（N:/T:/S:/D:/H: 形式の文字列）を生成する。"""
+    # 一様ノルム
+    def uniform_norm(pos, center):
+        return max(abs(pos[0] - center[0]), abs(pos[1] - center[1]))
+
+    def mirror_point(pos, size_x, size_y):
+        return (size_x - 1 - pos[0], size_y - 1 - pos[1])
+
+    # プレイヤー初期位置決定
+    center = (size_x // 2, size_y // 2)
+    while True:
+        pos0 = (random.randrange(size_x), random.randrange(size_y))
+        if uniform_norm(pos0, center) <= 1:
+            continue
+        if pos0[0] < size_x // 2 or (pos0[0] == size_x // 2 and pos0[1] < size_y // 2):
+            break
+    if mirror:
+        pos1 = mirror_point(pos0, size_x, size_y)
+    else:
+        while True:
+            pos1 = (random.randrange(size_x), random.randrange(size_y))
+            if uniform_norm(pos1, center) <= 1:
+                continue
+            if pos1[0] > size_x // 2 or (pos1[0] == size_x // 2 and pos1[1] > size_y // 2):
+                break
+
+    # フィールド初期化
+    field = [[0 for _ in range(size_x)] for _ in range(size_y)]
+
+    # プレイヤー初期位置をフィールドに明示的に記録（値は0のまま、他と区別しない）
+    # ただし、他の配置と重複しないようにするため、以降の配置でチェックする
+
+    # ブロック配置
+    i = 0
+    while i < block_num:
+        pos = (random.randrange(size_x), random.randrange(size_y))
+        mirrorPos = mirror_point(pos, size_x, size_y)
+        # ブロック配置条件
+        if (pos != pos0 and pos != pos1 and field[pos[1]][pos[0]] != 2 and pos != center):
+            field[pos[1]][pos[0]] = 2
+            if mirror:
+                if mirrorPos != pos0 and mirrorPos != pos1 and field[mirrorPos[1]][mirrorPos[0]] != 2 and mirrorPos != center:
+                    field[mirrorPos[1]][mirrorPos[0]] = 2
+                    i += 1
+        else:
+            i -= 1 if i > 0 else 0
+        i += 1
+
+    # アイテム配置
+    i = 0
+    while i < item_num:
+        pos = (random.randrange(size_x), random.randrange(size_y))
+        mirrorPos = mirror_point(pos, size_x, size_y)
+        around_item_flag = True
+        if uniform_norm(pos0, pos) <= 1 or uniform_norm(pos1, pos) <= 1:
+            around_item_flag = False
+        if (around_item_flag and
+            pos != pos0 and pos != pos1 and
+            field[pos[1]][pos[0]] != 3 and field[pos[1]][pos[0]] != 2 and pos != center):
+            field[pos[1]][pos[0]] = 3
+            if mirror:
+                if (mirrorPos != pos0 and mirrorPos != pos1 and
+                    field[mirrorPos[1]][mirrorPos[0]] != 3 and field[mirrorPos[1]][mirrorPos[0]] != 2 and mirrorPos != center):
+                    field[mirrorPos[1]][mirrorPos[0]] = 3
+                    i += 1
+        else:
+            i -= 1 if i > 0 else 0
+        i += 1
+    if mirror:
+        field[center[1]][center[0]] = 3
+
+    # マップデータ文字列生成
+    lines = []
+    lines.append("N:RandomMap")
+    lines.append(f"T:{turn}")
+    lines.append(f"S:{size_x},{size_y}")
+    for row in field:
+        lines.append("D:" + ",".join(str(cell) for cell in row))
+    # プレイヤー初期位置を明示的に2つとも出力
+    lines.append(f"C:{pos0[0]},{pos0[1]}")
+    lines.append(f"H:{pos1[0]},{pos1[1]}")
+    return "\\n".join(lines)
+
+
 class Game:
     """CHaserゲームのロジックを管理するクラス。"""
 
     def __init__(self):
         """ゲームの初期化を行う。"""
-        # マップデータを埋め込みで定義
-        self.map_data_str = (
-            "N:basic\\n"
-            "T:150\\n"
-            "S:15,17\\n"
-            "D:0,0,0,0,0,0,0,0,0,3,0,0,0,0,0\\n"
-            "D:0,0,0,0,0,2,2,3,0,2,0,0,3,2,0\\n"
-            "D:0,0,0,0,0,3,0,0,0,3,0,0,0,3,0\\n"
-            "D:0,0,0,3,0,0,0,3,0,0,0,3,0,0,3\\n"
-            "D:0,0,0,0,3,0,3,0,0,2,0,0,0,3,0\\n"
-            "D:0,2,2,3,0,2,0,0,3,2,3,0,3,2,0\\n"
-            "D:0,3,0,0,0,3,0,0,0,3,0,0,0,3,0\\n"
-            "D:0,0,0,3,0,0,3,0,0,0,0,3,0,0,0\\n"
-            "D:3,0,3,2,0,3,0,3,0,3,0,2,3,0,3\\n"
-            "D:0,0,0,3,0,0,0,0,3,0,0,3,0,0,0\\n"
-            "D:0,3,0,0,0,3,0,0,0,3,0,0,0,3,0\\n"
-            "D:0,2,3,0,3,2,3,0,0,2,0,3,2,2,0\\n"
-            "D:0,3,0,0,0,2,0,0,3,0,3,0,0,0,0\\n"
-            "D:3,0,0,3,0,0,0,3,0,0,0,3,0,0,0\\n"
-            "D:0,3,0,0,0,3,0,0,0,3,0,0,0,0,0\\n"
-            "D:0,2,3,0,0,2,0,3,2,2,0,0,0,0,0\\n"
-            "D:0,0,0,0,0,3,0,0,0,0,0,0,0,0,0\\n"
-            "H:1,1\\n"
-            "H:13,15\\n"
-        )
-
-        def create_random_map(size_x=15, size_y=17, block_num=20, item_num=35, turn=150, mirror=True):
-            # 一様ノルム
-            def uniform_norm(pos, center):
-                return max(abs(pos[0] - center[0]), abs(pos[1] - center[1]))
-
-            def mirror_point(pos, size_x, size_y):
-                return (size_x - 1 - pos[0], size_y - 1 - pos[1])
-
-            # プレイヤー初期位置決定
-            center = (size_x // 2, size_y // 2)
-            while True:
-                pos0 = (random.randrange(size_x), random.randrange(size_y))
-                if uniform_norm(pos0, center) <= 1:
-                    continue
-                if pos0[0] < size_x // 2 or (pos0[0] == size_x // 2 and pos0[1] < size_y // 2):
-                    break
-            if mirror:
-                pos1 = mirror_point(pos0, size_x, size_y)
-            else:
-                while True:
-                    pos1 = (random.randrange(size_x), random.randrange(size_y))
-                    if uniform_norm(pos1, center) <= 1:
-                        continue
-                    if pos1[0] > size_x // 2 or (pos1[0] == size_x // 2 and pos1[1] > size_y // 2):
-                        break
-
-            # フィールド初期化
-            field = [[0 for _ in range(size_x)] for _ in range(size_y)]
-
-            # プレイヤー初期位置をフィールドに明示的に記録（値は0のまま、他と区別しない）
-            # ただし、他の配置と重複しないようにするため、以降の配置でチェックする
-
-            # ブロック配置
-            i = 0
-            while i < block_num:
-                pos = (random.randrange(size_x), random.randrange(size_y))
-                mirrorPos = mirror_point(pos, size_x, size_y)
-                # ブロック配置条件
-                if (pos != pos0 and pos != pos1 and field[pos[1]][pos[0]] != 2 and pos != center):
-                    field[pos[1]][pos[0]] = 2
-                    if mirror:
-                        if mirrorPos != pos0 and mirrorPos != pos1 and field[mirrorPos[1]][mirrorPos[0]] != 2 and mirrorPos != center:
-                            field[mirrorPos[1]][mirrorPos[0]] = 2
-                            i += 1
-                else:
-                    i -= 1 if i > 0 else 0
-                i += 1
-
-            # アイテム配置
-            i = 0
-            while i < item_num:
-                pos = (random.randrange(size_x), random.randrange(size_y))
-                mirrorPos = mirror_point(pos, size_x, size_y)
-                around_item_flag = True
-                if uniform_norm(pos0, pos) <= 1 or uniform_norm(pos1, pos) <= 1:
-                    around_item_flag = False
-                if (around_item_flag and
-                    pos != pos0 and pos != pos1 and
-                    field[pos[1]][pos[0]] != 3 and field[pos[1]][pos[0]] != 2 and pos != center):
-                    field[pos[1]][pos[0]] = 3
-                    if mirror:
-                        if (mirrorPos != pos0 and mirrorPos != pos1 and
-                            field[mirrorPos[1]][mirrorPos[0]] != 3 and field[mirrorPos[1]][mirrorPos[0]] != 2 and mirrorPos != center):
-                            field[mirrorPos[1]][mirrorPos[0]] = 3
-                            i += 1
-                else:
-                    i -= 1 if i > 0 else 0
-                i += 1
-            if mirror:
-                field[center[1]][center[0]] = 3
-
-            # マップデータ文字列生成
-            lines = []
-            lines.append("N:RandomMap")
-            lines.append(f"T:{turn}")
-            lines.append(f"S:{size_x},{size_y}")
-            for row in field:
-                lines.append("D:" + ",".join(str(cell) for cell in row))
-            # プレイヤー初期位置を明示的に2つとも出力
-            lines.append(f"H:{pos0[0]},{pos0[1]}")
-            lines.append(f"H:{pos1[0]},{pos1[1]}")
-            return "\\n".join(lines)
-
-        # ランダムマップ生成
-        self.map_data_str = create_random_map()
+        if _custom_map_data:
+            # アップロードされたマップデータを使用
+            self.map_data_str = _custom_map_data
+        else:
+            # ランダムマップ生成
+            self.map_data_str = generate_random_map_data()
         # print(self.map_data_str)  # デバッグ用にマップデータを出力
         # ゲームの初期化
         self.initialize_game()
@@ -642,11 +1164,11 @@ class Game:
         self.chara_x = []  # 各プレイヤーのX座標
         self.chara_y = []  # 各プレイヤーのY座標
         self.score = [0, 0]  # スコア
-        self.turn = -1  # 現在のターン数
+        self.turn = 0  # 現在のターン数
         self.life = [1, 1]  # 各プレイヤーの生存フラグ（1:生存、0:死亡）
         self.put_winner = 0  # 'put'による勝者の判定用
         self.turn_max = 150  # 最大ターン数
-        self.get_ready_called = False  # プレイヤーの準備完了フラグ
+        self._ready_call_count = 0  # get_ready()の呼び出し回数（プレイヤー・対戦AI合算）
 
         # マップデータの解析とゲームの準備
         self.parse_map_data()
@@ -700,31 +1222,33 @@ class Game:
             return M_CHARA  # 敵キャラクターがいる場合
         return self.game_map[y][x]
 
-    def get_nearby_information(self, player_id):
-        """プレイヤーの周囲9マスの情報を取得する。"""
+    # コマンド方向文字(u/d/r/l)を(dx, dy)に変換する対応表
+    _DIRECTION_DELTA = {"u": (0, -1), "d": (0, 1), "r": (1, 0), "l": (-1, 0)}
+
+    def _get_area_info(self, x, y, player_id):
+        """(x, y)を中心とした3x3マスの情報を取得する。"""
         values = [1]  # 生存フラグをセット
         for j in range(9):
             values.append(
                 self.get_map_value(
-                    self.chara_x[player_id] + (j % 3) - 1,
-                    self.chara_y[player_id] + (j // 3) - 1,
+                    x + (j % 3) - 1,
+                    y + (j // 3) - 1,
                     player_id,
                 )
             )
         return values
 
+    def get_nearby_information(self, player_id):
+        """プレイヤーの周囲9マスの情報を取得する。"""
+        return self._get_area_info(self.chara_x[player_id], self.chara_y[player_id], player_id)
+
     def process_walk(self, player_id, direction):
         """移動の処理を行う。"""
         old_x = self.chara_x[player_id]
         old_y = self.chara_y[player_id]
-        if direction == "u":
-            self.chara_y[player_id] -= 1
-        elif direction == "d":
-            self.chara_y[player_id] += 1
-        elif direction == "r":
-            self.chara_x[player_id] += 1
-        elif direction == "l":
-            self.chara_x[player_id] -= 1
+        dx, dy = self._DIRECTION_DELTA[direction]
+        self.chara_x[player_id] += dx
+        self.chara_y[player_id] += dy
 
         # アイテム（ハート）を取得した場合の処理
         if (
@@ -739,62 +1263,30 @@ class Game:
 
     def process_put(self, player_id, direction):
         """ブロック設置の処理を行う。"""
-        if direction == "u":
-            self.game_map[self.chara_y[player_id] - 1][self.chara_x[player_id]] = M_BLOCK
-        elif direction == "d":
-            self.game_map[self.chara_y[player_id] + 1][self.chara_x[player_id]] = M_BLOCK
-        elif direction == "r":
-            self.game_map[self.chara_y[player_id]][self.chara_x[player_id] + 1] = M_BLOCK
-        elif direction == "l":
-            self.game_map[self.chara_y[player_id]][self.chara_x[player_id] - 1] = M_BLOCK
+        dx, dy = self._DIRECTION_DELTA[direction]
+        x = self.chara_x[player_id] + dx
+        y = self.chara_y[player_id] + dy
+        self.game_map[y][x] = M_BLOCK
 
     def process_look(self, player_id, direction):
         """Lookコマンドの処理を行う。指定した方向の2マス先を中心とした9マスの情報を取得する。"""
-        if direction == "u":
-            x = self.chara_x[player_id]
-            y = self.chara_y[player_id] - 2
-        elif direction == "d":
-            x = self.chara_x[player_id]
-            y = self.chara_y[player_id] + 2
-        elif direction == "r":
-            x = self.chara_x[player_id] + 2
-            y = self.chara_y[player_id]
-        elif direction == "l":
-            x = self.chara_x[player_id] - 2
-            y = self.chara_y[player_id]
-        else:
+        if direction not in self._DIRECTION_DELTA:
             raise ValueError("無効な方向が指定されました: {}".format(direction))
-
-        values = [1]  # 生存フラグ
-        for j in range(9):
-            values.append(
-                self.get_map_value(
-                    x + (j % 3) - 1,
-                    y + (j // 3) - 1,
-                    player_id,
-                )
-            )
-        return values
+        dx, dy = self._DIRECTION_DELTA[direction]
+        x = self.chara_x[player_id] + dx * 2
+        y = self.chara_y[player_id] + dy * 2
+        return self._get_area_info(x, y, player_id)
 
     def process_search(self, player_id, direction):
         """Searchコマンドの処理を行う。指定した方向に9マス先までの情報を取得する。"""
+        if direction not in self._DIRECTION_DELTA:
+            raise ValueError("無効な方向が指定されました: {}".format(direction))
+        dx, dy = self._DIRECTION_DELTA[direction]
         x = self.chara_x[player_id]
         y = self.chara_y[player_id]
         values = [1]  # 生存フラグ
-        if direction == "u":
-            for d in range(1, 10):
-                values.append(self.get_map_value(x, y - d, player_id))
-        elif direction == "d":
-            for d in range(1, 10):
-                values.append(self.get_map_value(x, y + d, player_id))
-        elif direction == "r":
-            for d in range(1, 10):
-                values.append(self.get_map_value(x + d, y, player_id))
-        elif direction == "l":
-            for d in range(1, 10):
-                values.append(self.get_map_value(x - d, y, player_id))
-        else:
-            raise ValueError("無効な方向が指定されました: {}".format(direction))
+        for d in range(1, 10):
+            values.append(self.get_map_value(x + dx * d, y + dy * d, player_id))
         return values
 
     def process_action(self, player_id, code):
@@ -834,154 +1326,26 @@ class Game:
     def check_player_status(self):
         """プレイヤーの生死を判定する。"""
         for j in range(2):
+            x, y = self.chara_x[j], self.chara_y[j]
             # プレイヤーがブロックに埋まっている場合は死亡
-            if self.get_map_value(self.chara_x[j], self.chara_y[j], j) == M_BLOCK:
+            if self.get_map_value(x, y, j) == M_BLOCK:
                 self.life[j] = 0
                 self.put_winner = 1 - j  # 相手の勝利
             # 四方がブロックで囲まれている場合は死亡
-            if (
-                self.get_map_value(self.chara_x[j], self.chara_y[j] - 1, j) == M_BLOCK
-                and self.get_map_value(self.chara_x[j], self.chara_y[j] + 1, j) == M_BLOCK
-                and self.get_map_value(self.chara_x[j] + 1, self.chara_y[j], j) == M_BLOCK
-                and self.get_map_value(self.chara_x[j] - 1, self.chara_y[j], j) == M_BLOCK
+            if all(
+                self.get_map_value(x + dx, y + dy, j) == M_BLOCK
+                for dx, dy in self._DIRECTION_DELTA.values()
             ):
                 self.life[j] = 0
                 self.put_winner = 1 - j  # 相手の勝利
 
-    def opponent_action(self):
-        """サンプルボット（相手プレイヤー）の行動を決定し、処理する。"""
-        player_id = 1  # 相手プレイヤーは1
-        map_info = self.get_nearby_information(player_id)[1:]  # 生存フラグを除外
+    def advance_turn_on_ready(self):
+        """get_ready()が呼ばれるたびに呼び出す。
+        プレイヤー・対戦AIの両方が1回ずつget_ready()を呼び終えるごとに
+        ターン数を1つ進める（呼び出し順序には依存しない）。"""
+        self._ready_call_count += 1
+        self.turn = (self._ready_call_count + 1) // 2
 
-        # 初動方向
-        if not hasattr(self, "_opponent_dir"):
-            self._opponent_dir = Left
-        dir = self._opponent_dir
-
-        # プレイヤーが隣接している場合はput
-        if map_info[Up] == Enemy:
-            self.process_action(player_id, "pu")
-            return
-        if map_info[Down] == Enemy:
-            self.process_action(player_id, "pd")
-            return
-        if map_info[Right] == Enemy:
-            self.process_action(player_id, "pr")
-            return
-        if map_info[Left] == Enemy:
-            self.process_action(player_id, "pl")
-            return
-
-        # 斜めに相手がいる場合は回避
-        if map_info[UpLeft] == Enemy:
-            if map_info[Down] != Block:
-                self.process_action(player_id, "wd")
-                self._opponent_dir = Down
-                return
-            elif map_info[Right] != Block:
-                self.process_action(player_id, "wr")
-                self._opponent_dir = Right
-                return
-        if map_info[UpRight] == Enemy:
-            if map_info[Down] != Block:
-                self.process_action(player_id, "wd")
-                self._opponent_dir = Down
-                return
-            elif map_info[Left] != Block:
-                self.process_action(player_id, "wl")
-                self._opponent_dir = Left
-                return
-        if map_info[DownLeft] == Enemy:
-            if map_info[Up] != Block:
-                self.process_action(player_id, "wu")
-                self._opponent_dir = Up
-                return
-            elif map_info[Right] != Block:
-                self.process_action(player_id, "wr")
-                self._opponent_dir = Right
-                return
-        if map_info[DownRight] == Enemy:
-            if map_info[Up] != Block:
-                self.process_action(player_id, "wu")
-                self._opponent_dir = Up
-                return
-            elif map_info[Left] != Block:
-                self.process_action(player_id, "wl")
-                self._opponent_dir = Left
-                return
-
-        # アイテム優先
-        if map_info[Up] == Item:
-            self.process_action(player_id, "wu")
-            self._opponent_dir = Up
-            return
-        if map_info[Down] == Item:
-            self.process_action(player_id, "wd")
-            self._opponent_dir = Down
-            return
-        if map_info[Right] == Item:
-            self.process_action(player_id, "wr")
-            self._opponent_dir = Right
-            return
-        if map_info[Left] == Item:
-            self.process_action(player_id, "wl")
-            self._opponent_dir = Left
-            return
-        if map_info[UpLeft] == Item:
-            if map_info[Up] != Block:
-                self.process_action(player_id, "wu")
-                self._opponent_dir = Up
-                return
-            elif map_info[Left] != Block:
-                self.process_action(player_id, "wl")
-                self._opponent_dir = Left
-                return
-        if map_info[UpRight] == Item:
-            if map_info[Up] != Block:
-                self.process_action(player_id, "wu")
-                self._opponent_dir = Up
-                return
-            elif map_info[Right] != Block:
-                self.process_action(player_id, "wr")
-                self._opponent_dir = Right
-                return
-        if map_info[DownLeft] == Item:
-            if map_info[Down] != Block:
-                self.process_action(player_id, "wd")
-                self._opponent_dir = Down
-                return
-            elif map_info[Left] != Block:
-                self.process_action(player_id, "wl")
-                self._opponent_dir = Left
-                return
-        if map_info[DownRight] == Item:
-            if map_info[Down] != Block:
-                self.process_action(player_id, "wd")
-                self._opponent_dir = Down
-                return
-            elif map_info[Right] != Block:
-                self.process_action(player_id, "wr")
-                self._opponent_dir = Right
-                return
-
-        # ブロックがない方向に進む
-        legal_moves = []
-        for d, code in zip([Up, Down, Left, Right], ["wu", "wd", "wl", "wr"]):
-            if map_info[d] != Block and dir != {Up:Down, Down:Up, Left:Right, Right:Left}[d]:
-                legal_moves.append((d, code))
-        if legal_moves:
-            d, code = random.choice(legal_moves)
-            self.process_action(player_id, code)
-            self._opponent_dir = d
-            return
-        else:
-            # 進めない場合は後退
-            back = {Up:Down, Down:Up, Left:Right, Right:Left}[dir]
-            code = {Up:"wd", Down:"wu", Left:"wr", Right:"wl"}[dir]
-            self.process_action(player_id, code)
-            self._opponent_dir = back
-            return
-            
     def is_game_over(self):
         """ゲーム終了の判定を行う。"""
         return self.life[0] == 0 or self.life[1] == 0 or self.turn >= self.turn_max
@@ -1055,13 +1419,30 @@ E = Enemy
 B = Block
 I = Item
 
+# プレイヤー・対戦AIの2つのClientで共有する、単一のGameインスタンス。
+# それぞれ別々の名前空間で実行されるプログラムから生成されるClient同士でも
+# 同じ対戦を進行できるよう、モジュールレベルで保持する。
+_shared_game = None
+
+
+def get_shared_game():
+    """共有のGameインスタンスを取得する（未生成なら生成する）。"""
+    global _shared_game
+    if _shared_game is None:
+        _shared_game = Game()
+    return _shared_game
+
+
 class Client:
     """ユーザーのクライアントを表現するクラス。"""
 
-    def __init__(self, port=None, name=None, host=None):
-        """クライアントの初期化を行う。"""
-        self.game = Game()  # ゲームのインスタンスを生成
-        self.player_id = 0  # プレイヤーはプレイヤー0（COOL）
+    def __init__(self, port=None, name=None, host=None, player_id=0):
+        """クライアントの初期化を行う。
+
+        player_id: 0ならプレイヤ（COOL）、1なら対戦AI（HOT）としてゲームに参加する。
+        """
+        self.game = get_shared_game()  # プレイヤー・対戦AIで共有するゲームインスタンス
+        self.player_id = player_id
         self.turn = 0  # 現在のターン
         self.game_over = False  # ゲーム終了フラグ
 
@@ -1070,35 +1451,20 @@ class Client:
         if self.game_over:
             return None
 
-        if self.game.life[self.player_id] == 0:
-            print("ゲーム終了")
-            self.game_over = True
-            return None
-
         if gr_flag:
-            if not self.game.get_ready_called:
-                self.game.get_ready_called = True
-            else:
-                print("get_ready が２連続です")
-                self.game_over = True
-                return None
-
-            if self.turn > 0:
-                # 相手のターンを処理
-                self.game.opponent_action()
-
-            self.game.turn += 1
+            # プレイヤー・対戦AIの両方が呼び終えるごとにターンを1つ進める
+            self.game.advance_turn_on_ready()
             self.turn += 1
             self.game.disp()  # ゲーム画面を更新
             values = self.game.get_nearby_information(self.player_id)
+            if self.game.life[self.player_id] == 0:
+                # 直前の相手の行動などで死亡していた場合でも、このターンの
+                # get_readyでは（moot ではあるが）正しい情報を返し、
+                # 次回以降の呼び出しから確実に打ち切る。
+                print("ゲーム終了")
+                self.game_over = True
             return values[1:]  # [0]は生存フラグなので除外
         else:
-            if self.game.get_ready_called:
-                self.game.get_ready_called = False
-            else:
-                print("get_ready がありません")
-                self.game_over = True
-                return None
             try:
                 values = self.game.process_action(self.player_id, order_str)
             except Exception as e:
@@ -1111,12 +1477,13 @@ class Client:
             if self.game.is_game_over():
                 print("\\nゲーム終了")
                 winner = self.game.judge_winner()
-                if winner == 0:
-                    print("プレイヤの勝ちです！")
-                elif winner == 1:
-                    print("プレイヤの負けです。")
-                else:
+                my_name = self.game.names[self.player_id]
+                if winner == self.player_id:
+                    print(f"{my_name}の勝ちです！")
+                elif winner == 2:
                     print("引き分けです。")
+                else:
+                    print(f"{my_name}の負けです。")
                 self.game_over = True
                 return values[1:]  # [0]は生存フラグなので除外
 
@@ -1357,7 +1724,7 @@ class Client:
         let transformerCode = `
 import ast
 
-def transform_code(source_code):
+def transform_code(source_code, player_id=0, client_name='player'):
     # ソースコードをAST（抽象構文木）にパースします
     tree = ast.parse(source_code)
 
@@ -1388,11 +1755,12 @@ def transform_code(source_code):
                         if (isinstance(assign_node.value, ast.Call) and
                             isinstance(assign_node.value.func, ast.Name) and
                             assign_node.value.func.id == 'Client'):
-                            # 引数を固定値に置換
+                            # 引数を固定値に置換（player_idでプレイヤ/対戦AIを区別する）
                             assign_node.value.keywords = [
                                 ast.keyword(arg='port', value=ast.Constant(value=2010)),
-                                ast.keyword(arg='name', value=ast.Constant(value='player')),
+                                ast.keyword(arg='name', value=ast.Constant(value=client_name)),
                                 ast.keyword(arg='host', value=ast.Constant(value='localhost')),
+                                ast.keyword(arg='player_id', value=ast.Constant(value=player_id)),
                             ]
                         return assign_node
 
@@ -1515,25 +1883,12 @@ sys.excepthook = custom_excepthook
                 gameGrid.innerHTML = '';
 
                 // game_stateに基づいてセルを生成
-                for (let i = 1; i < game_state.length - 1; i++) {
-                    for (let j = 1; j < game_state[i].length - 1; j++) {
-                        let cell = game_state[i][j];
+                const CELL_CLASS_BY_VALUE = { 0: 'floor', 2: 'block', 3: 'item', 4: 'player0', 5: 'player1' };
+                for (let row of game_state) {
+                    for (let cell of row) {
                         let cellDiv = document.createElement('div');
                         cellDiv.classList.add('cell');
-
-                        if (cell === 0) {
-                            cellDiv.classList.add('floor');
-                        } else if (cell === 2) {
-                            cellDiv.classList.add('block');
-                        } else if (cell === 3) {
-                            cellDiv.classList.add('item');
-                        } else if (cell === 4) {
-                            cellDiv.classList.add('player0');
-                        } else if (cell === 5) {
-                            cellDiv.classList.add('player1');
-                        } else {
-                            cellDiv.classList.add('floor');
-                        }
+                        cellDiv.classList.add(CELL_CLASS_BY_VALUE[cell] || 'floor');
                         gameGrid.appendChild(cellDiv);
                     }
                 }
@@ -1546,7 +1901,7 @@ sys.excepthook = custom_excepthook
             // 関数をグローバルスコープに配置
             window.updateGameDisplay = updateGameDisplay;
 
-            // 実行ボタンがクリックされたときにユーザーコードを実行
+            // 実行ボタンがクリックされたときにプレイヤー・対戦AI両方のコードを実行
             document.getElementById('run-button').addEventListener('click', async () => {
                 consoleOutput.textContent = ''; // コンソール出力をクリア
 
@@ -1560,16 +1915,42 @@ sys.excepthook = custom_excepthook
                 // Pyodideのグローバル変数をクリア
                 pyodide.globals.clear();
 
-                let userCode = editor.getValue();
+                let playerCode = playerEditor.getValue();
+                let opponentCode = opponentEditor.getValue();
+                let mapData = '';
+                if (document.getElementById('map-use-custom').checked) {
+                    if (mapGrid.coolPos && mapGrid.hotPos) {
+                        mapData = mapEditorAdapter.getValue();
+                    } else {
+                        writeToConsole('マップにプレイヤ(Cool)と対戦AI(Hot)の初期位置が設定されていないため、ランダムマップで実行します。');
+                    }
+                }
                 try {
-                    // ユーザーコードを実行
-                    await executeUserCode(userCode);
+                    // プレイヤー・対戦AI双方のコードを実行
+                    await executeUserCode(playerCode, opponentCode, mapData);
                 } catch (err) {
                     writeToConsole(err.message || err);
                 }
             });
 
-            async function executeUserCode(userCode) {
+            // 「ランダムマップを生成」ボタン：サンプルとしてランダムマップをマップエディタに書き出す
+            document.getElementById('generate-random-map-button').addEventListener('click', async () => {
+                try {
+                    if (!pyodide.FS.analyzePath('lib').exists) {
+                        pyodide.FS.mkdir('lib');
+                    }
+                    pyodide.FS.writeFile('lib/pyCHaser.py', chaserCode);
+                    await pyodide.runPythonAsync(`
+import lib.pyCHaser as _map_gen_mod
+_generated_map = _map_gen_mod.generate_random_map_data()
+                    `);
+                    mapEditorAdapter.setValue(pyodide.globals.get('_generated_map'));
+                } catch (err) {
+                    writeToConsole(err.message || err);
+                }
+            });
+
+            async function executeUserCode(playerCode, opponentCode, mapData) {
                 try {
                     // 必要なモジュールを再インポート
                     await pyodide.runPythonAsync(transformerCode);
@@ -1578,22 +1959,49 @@ sys.excepthook = custom_excepthook
                         pyodide.FS.mkdir('lib');
                     }
 
-                    // CHaser.pyを仮想ファイルシステムに書き込む
-                    pyodide.FS.writeFile('lib/CHaser.py', chaserCode);
+                    // pyCHaser.pyを仮想ファイルシステムに書き込む
+                    pyodide.FS.writeFile('lib/pyCHaser.py', chaserCode);
 
-                    // ユーザーコードを変換して実行
-                    pyodide.globals.set('user_code', userCode);
+                    // 前回の対戦で読み込まれたlib.pyCHaserのキャッシュを破棄し、
+                    // 共有ゲームインスタンス(_shared_game)を含めて完全にリセットする
                     await pyodide.runPythonAsync(`
-transformed_code = transform_code(user_code)
+import sys
+sys.modules.pop('lib.pyCHaser', None)
+sys.modules.pop('lib', None)
                     `);
-                    let transformed_code = pyodide.globals.get('transformed_code');
-                    // 変換後のコードをコンソールに出力
-                    console.log("Transformed Code:\\n", transformed_code);
 
-                    pyodide.globals.set('transformed_code', transformed_code);
+                    // プレイヤー・対戦AIそれぞれのコードを変換
+                    pyodide.globals.set('player_code', playerCode);
+                    pyodide.globals.set('opponent_code', opponentCode);
                     await pyodide.runPythonAsync(`
-exec(transformed_code)
-do_turn = main()
+player_transformed = transform_code(player_code, player_id=0, client_name='player')
+opponent_transformed = transform_code(opponent_code, player_id=1, client_name='opponent')
+                    `);
+                    // 変換後のコードをコンソールに出力（デバッグ用）
+                    console.log("Transformed Player Code:\\n", pyodide.globals.get('player_transformed'));
+                    console.log("Transformed Opponent Code:\\n", pyodide.globals.get('opponent_transformed'));
+
+                    // プレイヤー・対戦AIをそれぞれ独立した名前空間で実行する。
+                    // 両者とも自身の`from lib.pyCHaser import *`によって同じlib.pyCHaserモジュール
+                    // （＝同じ共有ゲームインスタンス）を参照するため、この2つのClientは
+                    // 同一の対戦に参加することになる。
+                    pyodide.globals.set('map_data', mapData || null);
+                    await pyodide.runPythonAsync(`
+player_ns = {'__name__': '__chaser_player__'}
+opponent_ns = {'__name__': '__chaser_opponent__'}
+
+# 名前空間内でexecすると"from lib.pyCHaser import *"によりlib.pyCHaserがインポートされる
+# （Gameインスタンスはまだ生成されない。main()を呼び出した時点で生成される）
+exec(player_transformed, player_ns)
+exec(opponent_transformed, opponent_ns)
+
+# 対戦の終了判定・マップ設定に使うため、共有モジュールを取得しておく
+import lib.pyCHaser as _chaser_mod
+# アップロードされたマップ（空ならNone＝ランダム生成）をGame生成前に設定する
+_chaser_mod.set_custom_map(map_data)
+
+do_turn_player = player_ns['main']()
+do_turn_opponent = opponent_ns['main']()
                     `);
 
                     // ゲーム実行フラグを設定
@@ -1608,10 +2016,15 @@ do_turn = main()
             function runTurn() {
                 if (!gameRunning) return;
 
-                let do_turn = pyodide.globals.get('do_turn');
+                let doTurnOpponent = pyodide.globals.get('do_turn_opponent');
+                let doTurnPlayer = pyodide.globals.get('do_turn_player');
                 try {
-                    let result = do_turn();
-                    if (result) {
+                    // 対戦AI → プレイヤーの順に1ターン分の行動を行う
+                    let continueOpponent = doTurnOpponent();
+                    let continuePlayer = doTurnPlayer();
+                    let isOver = pyodide.runPython('_chaser_mod.get_shared_game().is_game_over()');
+
+                    if (continueOpponent && continuePlayer && !isOver) {
                         // ゲームが続行中の場合、次のターンを実行
                         turnTimeout = setTimeout(runTurn, 500);
                     } else {
@@ -1627,10 +2040,13 @@ do_turn = main()
                 }
             }
 
-            // ダウンロードボタンのクリックイベントを追加
+            // ダウンロードボタンのクリックイベントを追加（現在選択中のタブのエディタが対象）
+            var DEFAULT_DOWNLOAD_NAME = { player: 'my_program', opponent: 'my_opponent', map: 'my_map' };
+            var DOWNLOAD_EXTENSION = { player: '.py', opponent: '.py', map: '.txt' };
             document.getElementById('download-button').addEventListener('click', () => {
-                let code = editor.getValue();
-                let filename = prompt('ファイル名を入力してください（拡張子は不要です）:', 'my_program');
+                let code = getActiveEditor().getValue();
+                let defaultName = DEFAULT_DOWNLOAD_NAME[activeEditorKey];
+                let filename = prompt('ファイル名を入力してください（拡張子は不要です）:', defaultName);
                 if (filename !== null) {
                     filename = filename.trim();
                     if (filename === '') {
@@ -1638,7 +2054,7 @@ do_turn = main()
                         return;
                     }
                     // ファイル名に拡張子を追加
-                    let fullFilename = filename + '.py';
+                    let fullFilename = filename + DOWNLOAD_EXTENSION[activeEditorKey];
                     // ファイルを作成してダウンロード
                     let blob = new Blob([code], { type: 'text/plain' });
                     let url = URL.createObjectURL(blob);
@@ -1652,7 +2068,7 @@ do_turn = main()
                 }
             });
 
-            // アップロードボタンのクリックイベントを追加
+            // アップロードボタンのクリックイベントを追加（現在選択中のタブのエディタに読み込む）
             document.getElementById('upload-button').addEventListener('click', () => {
                 // ファイル選択ダイアログを表示
                 document.getElementById('file-input').click();
@@ -1665,9 +2081,11 @@ do_turn = main()
                     let reader = new FileReader();
                     reader.onload = function(e) {
                         let content = e.target.result;
-                        editor.setValue(replaceTabsWithSpaces(content));
+                        getActiveEditor().setValue(replaceTabsWithSpaces(content));
                     };
                     reader.readAsText(file);
+                    // 同じファイルを続けて選択できるよう入力値をリセット
+                    event.target.value = '';
                 }
             });
 
@@ -1685,9 +2103,6 @@ do_turn = main()
                 }
             };
 
-            // エディタにオーバーレイを適用
-            editor.addOverlay(fullWidthSpaceOverlay);
-
             // 不可視文字（スペース）を検出して可視化するオーバーレイを定義
             var invisiblesOverlay = {
                 token: function(stream) {
@@ -1701,11 +2116,8 @@ do_turn = main()
                 }
             };
 
-            // エディタにオーバーレイを追加
-            editor.addOverlay(invisiblesOverlay);
-
-            // 各行のインデントレベルを計算してクラスを追加
-            editor.on('renderLine', function(cm, line, element) {
+            // 各行のインデントレベルを計算してクラスを追加するハンドラ
+            function renderLineIndentGuides(cm, line, element) {
                 var text = line.text;
                 var indentUnit = cm.getOption('indentUnit');
                 var indentLevel = 0;
@@ -1723,10 +2135,15 @@ do_turn = main()
                 if (indentLevel > 0) {
                     element.classList.add('indent-level-' + indentLevel);
                 }
+            }
+
+            // プレイヤー・対戦AI両方のエディタにオーバーレイやハンドラを適用
+            [playerEditor, opponentEditor].forEach(function(cm) {
+                cm.addOverlay(fullWidthSpaceOverlay);
+                cm.addOverlay(invisiblesOverlay);
+                cm.on('renderLine', renderLineIndentGuides);
+                cm.refresh(); // レンダリングを再実行
             });
-
-            editor.refresh(); // レンダリングを再実行
-
         }
 
         main();
