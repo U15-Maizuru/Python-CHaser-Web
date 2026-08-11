@@ -6,12 +6,15 @@
     <link rel="icon" href="./images/favicon.ico">
     <!-- Google FontsからIBM Plex Sans JPとIBM Plex Monoを読み込み -->
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;600&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
-    <!-- CodeMirrorのCSSを読み込み -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css">
+    <!-- CodeMirrorのCSSを読み込み（integrityでCDN側の改竄を検知する） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css"
+          integrity="sha384-zaeBlB/vwYsDRSlFajnDd7OydJ0cWk+c2OWybl3eSUf6hW2EbhlCsQPqKr3gkznT" crossorigin="anonymous">
     <!-- CodeMirrorのテーマを読み込み -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/theme/monokai.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/theme/monokai.min.css"
+          integrity="sha384-05WuhgjXiqmZzcQ3vQRQ39HN356Yqb+SnhvELzFtpwS5b2IlqE8QsOO5LCSJ2znj" crossorigin="anonymous">
     <!-- Pyodideを読み込み -->
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"
+            integrity="sha384-i3R37b3tF+HWudsUf1VSEOY2YxwSNMqY8DQa9Z0O3xh+NkJ9o+yjcGyIi5huj+nB" crossorigin="anonymous"></script>
     <style>
         /* 全体のスタイル */
         body {
@@ -240,6 +243,17 @@
 
         .button-group button:hover {
             background-color: #555;
+        }
+
+        /* アップロードの注意書き */
+        .upload-warning {
+            margin: 0;
+            padding: 6px 10px;
+            background-color: #3a2f22;
+            border-top: 1px solid #444;
+            color: #d7b377;
+            font-size: 12px;
+            line-height: 1.5;
         }
 
         /* コンソール出力 */
@@ -483,12 +497,17 @@
             </div>
             <div class="button-group">
                 <button id="run-button">実行</button>
+                <button id="stop-button">停止</button>
                 <button id="download-button">ダウンロード</button>
                 <button id="upload-button">アップロード</button>
                 <!-- ファイル入力要素（非表示） -->
                 <input type="file" id="file-input" accept=".py">
                 <span class="active-editor-label" id="active-editor-label">編集中: プレイヤー</span>
             </div>
+            <p class="upload-warning">
+                ⚠ アップロードしたプログラムは、あなたのブラウザ上でそのまま実行されます。
+                配布元が確認できないファイルはアップロードしないでください。
+            </p>
             <div id="console-output"></div>
         </div>
         <!-- 右側の列（ゲーム画面） -->
@@ -515,14 +534,18 @@
         </div>
     </div>
 
-    <!-- CodeMirrorのJSを読み込み -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <!-- CodeMirrorのJSを読み込み（バージョンはheadのCSSと揃える。integrityでCDN側の改竄を検知する） -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"
+            integrity="sha384-BEgQlz0fN4eG0n4jipmUe+nOg65hPY7L0E/lPVRaOPdzAfLPGEbXnpAodHtSnlwM" crossorigin="anonymous"></script>
     <!-- CodeMirrorのPythonモードを読み込み -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/python/python.min.js"
+            integrity="sha384-Xy+2exU6lBoT4OpUOtnQb+cUpn+nlJQEHvRobWVtwz6wIsw4oNoO7xyd/l8rYgMy" crossorigin="anonymous"></script>
     <!-- CodeMirrorのキー設定（任意） -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/keymap/sublime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/keymap/sublime.min.js"
+            integrity="sha384-jNYZKWiaeym/4d2j+LoPFitrqzDLoy5fVJm9FdqU5vJqYttlT1Gz072i+6plf4wK" crossorigin="anonymous"></script>
     <!-- CodeMirrorのアドオン（任意） -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/edit/matchbrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/addon/edit/matchbrackets.min.js"
+            integrity="sha384-LjCI3E8qhhxXZvu7+FCvqx9eZYSowFvuJ7z54KsgI/BDPGKEuysqCg/vYiKHvC4Y" crossorigin="anonymous"></script>
 
     <script>
         // CodeMirrorエディタの初期化（プレイヤー用・対戦AI用の2つ。マップはグリッドエディタ）
@@ -550,6 +573,28 @@
         var MAP_TOOL_CELL_VALUE = { floor: 0, block: 2, item: 3 };
         var mapTool = 'floor';
         var mapGrid = null;
+
+        // マップサイズ・ターン数の許容範囲。マップエディタの input[min]/[max] と
+        // Python側のparse_map_dataの検証にも同じ値を使う。
+        var MAP_SIZE_MIN = 5, MAP_SIZE_MAX = 40;
+        var MAP_TURN_MIN = 1, MAP_TURN_MAX = 999;
+        // セルとして許可する値（それ以外は床として扱う）
+        var MAP_CELL_VALUES = [0, 2, 3];
+
+        // 整数として解釈し、範囲外・数値でない場合はクランプまたはフォールバックする。
+        // アップロード経路とサイズ変更ボタンの両方から使い、極端な値による
+        // 描画コストの増大を防ぐ。
+        function clampInt(value, min, max, fallback) {
+            var n = parseInt(value, 10);
+            if (isNaN(n)) return fallback;
+            return Math.max(min, Math.min(max, n));
+        }
+        function clampMapSize(value, fallback) {
+            return clampInt(value, MAP_SIZE_MIN, MAP_SIZE_MAX, fallback);
+        }
+        function clampTurnMax(value, fallback) {
+            return clampInt(value, MAP_TURN_MIN, MAP_TURN_MAX, fallback);
+        }
 
         function createEmptyMapGrid(sizeX, sizeY, turnMax) {
             var cells = [];
@@ -584,15 +629,18 @@
                 var prefix = line[0];
                 var body = line.slice(2);
                 if (prefix === 'T') {
-                    var t = parseInt(body, 10);
-                    if (!isNaN(t)) turnMax = t;
+                    turnMax = clampTurnMax(body, turnMax);
                 } else if (prefix === 'S') {
-                    var s = body.split(',').map(Number);
-                    if (s.length === 2 && s.every(function(n) { return !isNaN(n); })) {
-                        sizeX = s[0]; sizeY = s[1];
+                    var s = body.split(',');
+                    if (s.length === 2) {
+                        sizeX = clampMapSize(s[0], sizeX);
+                        sizeY = clampMapSize(s[1], sizeY);
                     }
                 } else if (prefix === 'D') {
-                    rows.push(body.split(',').map(Number));
+                    // 高さの上限を超える行と、幅の上限を超える列は読み捨てる
+                    if (rows.length < MAP_SIZE_MAX) {
+                        rows.push(body.split(',', MAP_SIZE_MAX).map(Number));
+                    }
                 } else if (prefix === 'C') {
                     var c = body.split(',').map(Number);
                     if (c.length === 2) coolPos = { x: c[0], y: c[1] };
@@ -614,10 +662,19 @@
                 var srcRow = rows[y] || [];
                 var row = [];
                 for (var x = 0; x < sizeX; x++) {
-                    row.push(srcRow[x] !== undefined && !isNaN(srcRow[x]) ? srcRow[x] : 0);
+                    // 想定外のセル値（負値・小数・4以上・NaNなど）は床として扱う
+                    row.push(MAP_CELL_VALUES.indexOf(srcRow[x]) >= 0 ? srcRow[x] : 0);
                 }
                 cells.push(row);
             }
+            // マップ範囲外・非整数の初期位置は未設定として扱う。
+            // （実行時は「初期位置未設定」としてランダムマップにフォールバックする）
+            function isValidPos(p) {
+                return p !== null && Number.isInteger(p.x) && Number.isInteger(p.y) &&
+                    p.x >= 0 && p.x < sizeX && p.y >= 0 && p.y < sizeY;
+            }
+            if (!isValidPos(coolPos)) coolPos = null;
+            if (!isValidPos(hotPos)) hotPos = null;
             mapGrid = { sizeX: sizeX, sizeY: sizeY, turnMax: turnMax, cells: cells, coolPos: coolPos, hotPos: hotPos };
             document.getElementById('map-size-x').value = sizeX;
             document.getElementById('map-size-y').value = sizeY;
@@ -670,8 +727,8 @@
         });
 
         document.getElementById('map-resize-button').addEventListener('click', function() {
-            var newX = Math.max(5, Math.min(40, parseInt(document.getElementById('map-size-x').value, 10) || mapGrid.sizeX));
-            var newY = Math.max(5, Math.min(40, parseInt(document.getElementById('map-size-y').value, 10) || mapGrid.sizeY));
+            var newX = clampMapSize(document.getElementById('map-size-x').value, mapGrid.sizeX);
+            var newY = clampMapSize(document.getElementById('map-size-y').value, mapGrid.sizeY);
             var newCells = [];
             for (var y = 0; y < newY; y++) {
                 var row = [];
@@ -691,8 +748,7 @@
         });
 
         document.getElementById('map-turn-max').addEventListener('change', function() {
-            var t = parseInt(this.value, 10);
-            mapGrid.turnMax = (!isNaN(t) && t > 0) ? t : mapGrid.turnMax;
+            mapGrid.turnMax = clampTurnMax(this.value, mapGrid.turnMax);
             this.value = mapGrid.turnMax;
         });
 
@@ -1047,6 +1103,14 @@ M_CHARA = 1  # キャラクター
 M_BLOCK = 2  # ブロック
 M_ITEM = 3   # アイテム（ハート）
 
+# マップデータの許容範囲。JS側のclampMapSize/clampTurnMaxと同じ値にしておき、
+# アップロードされたマップが範囲外だった場合はここで明示的なエラーにする。
+MAP_SIZE_MIN = 5
+MAP_SIZE_MAX = 40
+MAP_TURN_MIN = 1
+MAP_TURN_MAX = 999
+MAP_CELL_VALUES = (M_FLOOR, M_BLOCK, M_ITEM)
+
 # アップロードされたカスタムマップデータ。Noneならランダムマップを生成する。
 _custom_map_data = None
 
@@ -1173,10 +1237,46 @@ class Game:
         # マップデータの解析とゲームの準備
         self.parse_map_data()
 
+    @staticmethod
+    def _parse_int(text, prefix):
+        """マップデータ中の整数を解析する。数値でない場合は分かりやすいエラーにする。"""
+        try:
+            return int(text.strip())
+        except ValueError:
+            # from None で内側の例外を隠し、コンソールに出るメッセージを1つにする
+            raise ValueError(
+                "マップデータの" + prefix + ":行に数値でない値があります: " + repr(text)
+            ) from None
+
+    def _parse_position(self, line_body, prefix):
+        """C:/H:行の座標を解析し、マップの範囲内かを検証して(x, y)を返す。"""
+        chara_s = line_body.split(",")
+        if len(chara_s) != 2:
+            raise ValueError(
+                "マップデータの" + prefix + ":行の形式が不正です（" + prefix + ":x,y）: " + line_body
+            )
+        x = self._parse_int(chara_s[0], prefix)
+        y = self._parse_int(chara_s[1], prefix)
+        # map_size_x/yは壁を含むサイズなので、実際の配置可能範囲は0〜size-3
+        if not (0 <= x <= self.map_size_x - 3 and 0 <= y <= self.map_size_y - 3):
+            raise ValueError(
+                "マップデータの" + prefix + ":行の初期位置がマップの範囲外です: "
+                + str(x) + "," + str(y)
+            )
+        return x, y
+
     def parse_map_data(self):
-        """マップデータを解析してゲームマップを構築する。"""
+        """マップデータを解析してゲームマップを構築する。
+
+        アップロードされた不正なマップでIndexError等の分かりにくい例外が出ないよう、
+        行の順序・行数・値の範囲を検証し、原因の分かるエラーメッセージを出す。
+        """
         lines = self.map_data_str.strip().split("\\n")
         map_line = 1  # マップデータは1から開始
+        self.map_size_x = None
+        self.map_size_y = None
+        cool_pos = None  # C:行で指定されたプレイヤ(Cool)の初期位置
+        hot_pos = None   # H:行で指定された対戦AI(Hot)の初期位置
 
         for line in lines:
             line = line.rstrip()
@@ -1186,28 +1286,87 @@ class Game:
                 if line[0] == "N":
                     self.map_name = line_body  # マップ名
                 elif line[0] == "T":
-                    self.turn_max = int(line_body)  # 最大ターン数
+                    turn_max = self._parse_int(line_body, "T")  # 最大ターン数
+                    if not MAP_TURN_MIN <= turn_max <= MAP_TURN_MAX:
+                        raise ValueError(
+                            "マップデータのターン数は" + str(MAP_TURN_MIN) + "〜"
+                            + str(MAP_TURN_MAX) + "の範囲で指定してください: " + str(turn_max)
+                        )
+                    self.turn_max = turn_max
                 elif line[0] == "S":
                     map_size_s = line_body.split(",")
-                    self.map_size_x = int(map_size_s[0]) + 2  # マップの横サイズ（両端に壁を追加）
-                    self.map_size_y = int(map_size_s[1]) + 2  # マップの縦サイズ（上下に壁を追加）
+                    if len(map_size_s) != 2:
+                        raise ValueError(
+                            "マップデータのS:行の形式が不正です（S:幅,高さ）: " + line_body
+                        )
+                    size_x = self._parse_int(map_size_s[0], "S")
+                    size_y = self._parse_int(map_size_s[1], "S")
+                    for size in (size_x, size_y):
+                        if not MAP_SIZE_MIN <= size <= MAP_SIZE_MAX:
+                            raise ValueError(
+                                "マップのサイズは" + str(MAP_SIZE_MIN) + "〜" + str(MAP_SIZE_MAX)
+                                + "の範囲で指定してください: " + line_body
+                            )
+                    self.map_size_x = size_x + 2  # マップの横サイズ（両端に壁を追加）
+                    self.map_size_y = size_y + 2  # マップの縦サイズ（上下に壁を追加）
                     self.game_map = [[] for _ in range(self.map_size_y)]  # マップデータの初期化
                 elif line[0] == "D":
                     # マップの各行のデータ
+                    if self.map_size_x is None:
+                        raise ValueError("マップデータのD:行がS:行より前にあります。")
+                    if map_line > self.map_size_y - 2:
+                        raise ValueError(
+                            "マップデータのD:行の数がS:行で指定した高さ("
+                            + str(self.map_size_y - 2) + ")を超えています。"
+                        )
                     line_body = "2," + line_body + ",2"  # 左右に壁（ブロック）を追加
-                    map_row = [int(data) for data in line_body.split(",")]
+                    map_row = [self._parse_int(data, "D") for data in line_body.split(",")]
+                    if len(map_row) != self.map_size_x:
+                        raise ValueError(
+                            "マップデータのD:行の列数がS:行で指定した幅("
+                            + str(self.map_size_x - 2) + ")と一致しません: "
+                            + str(len(map_row) - 2) + "列"
+                        )
+                    for cell in map_row:
+                        if cell not in MAP_CELL_VALUES:
+                            raise ValueError(
+                                "マップデータのD:行に使用できない値があります（"
+                                + str(M_FLOOR) + "/" + str(M_BLOCK) + "/" + str(M_ITEM)
+                                + "のみ使用可）: " + str(cell)
+                            )
                     self.game_map[map_line] = map_row
                     map_line += 1
                 elif line[0] == "H":
                     # HOTプレイヤーの初期位置
-                    chara_s = line_body.split(",")
-                    self.chara_x.insert(1, int(chara_s[0]) + 1)
-                    self.chara_y.insert(1, int(chara_s[1]) + 1)
+                    if self.map_size_x is None:
+                        raise ValueError("マップデータのH:行がS:行より前にあります。")
+                    if hot_pos is not None:
+                        raise ValueError("マップデータにH:行が複数あります。")
+                    hot_pos = self._parse_position(line_body, "H")
                 elif line[0] == "C":
                     # COOLプレイヤーの初期位置
-                    chara_s = line_body.split(",")
-                    self.chara_x.insert(0, int(chara_s[0]) + 1)
-                    self.chara_y.insert(0, int(chara_s[1]) + 1)
+                    if self.map_size_x is None:
+                        raise ValueError("マップデータのC:行がS:行より前にあります。")
+                    if cool_pos is not None:
+                        raise ValueError("マップデータにC:行が複数あります。")
+                    cool_pos = self._parse_position(line_body, "C")
+
+        # 必要な要素が揃っているかを確認する
+        if self.map_size_x is None:
+            raise ValueError("マップデータにS:行（マップサイズ）がありません。")
+        if map_line != self.map_size_y - 1:
+            raise ValueError(
+                "マップデータのD:行の数がS:行で指定した高さ(" + str(self.map_size_y - 2)
+                + ")と一致しません: " + str(map_line - 1) + "行"
+            )
+        if cool_pos is None or hot_pos is None:
+            raise ValueError(
+                "マップデータにプレイヤ(C:)と対戦AI(H:)の初期位置の両方を指定してください。"
+            )
+
+        # 壁の分だけずらして格納する（インデックス0=Cool, 1=Hot）
+        self.chara_x = [cool_pos[0] + 1, hot_pos[0] + 1]
+        self.chara_y = [cool_pos[1] + 1, hot_pos[1] + 1]
 
         # マップの上下に壁（ブロック）の行を追加
         block_row = [M_BLOCK] * self.map_size_x
@@ -1933,6 +2092,20 @@ sys.excepthook = custom_excepthook
                 }
             });
 
+            // 停止ボタン：実行中の対戦を次のターンに進めずに打ち切る。
+            // ターン間で停止するため、1ターンの処理自体が終わらない場合は
+            // このボタンでは中断できない。
+            document.getElementById('stop-button').addEventListener('click', () => {
+                if (turnTimeout) {
+                    clearTimeout(turnTimeout);
+                    turnTimeout = null;
+                }
+                if (gameRunning) {
+                    gameRunning = false;
+                    writeToConsole('実行を停止しました。');
+                }
+            });
+
             // 「ランダムマップを生成」ボタン：サンプルとしてランダムマップをマップエディタに書き出す
             document.getElementById('generate-random-map-button').addEventListener('click', async () => {
                 try {
@@ -2074,19 +2247,34 @@ do_turn_opponent = opponent_ns['main']()
                 document.getElementById('file-input').click();
             });
 
+            // アップロードを受け付けるファイルサイズの上限（プログラムもマップも1MBあれば十分）
+            const MAX_UPLOAD_BYTES = 1024 * 1024;
+
             // ファイルが選択されたときの処理
             document.getElementById('file-input').addEventListener('change', (event) => {
                 let file = event.target.files[0];
-                if (file) {
-                    let reader = new FileReader();
-                    reader.onload = function(e) {
-                        let content = e.target.result;
-                        getActiveEditor().setValue(replaceTabsWithSpaces(content));
-                    };
-                    reader.readAsText(file);
-                    // 同じファイルを続けて選択できるよう入力値をリセット
-                    event.target.value = '';
+                // 同じファイルを続けて選択できるよう入力値をリセット
+                // （Fileオブジェクトは取得済みなのでリセット後も読み込める）
+                event.target.value = '';
+                if (!file) return;
+                if (file.size > MAX_UPLOAD_BYTES) {
+                    alert('ファイルサイズが大きすぎます（上限 1MB）。');
+                    return;
                 }
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let content = e.target.result;
+                    try {
+                        getActiveEditor().setValue(replaceTabsWithSpaces(content));
+                    } catch (err) {
+                        // マップの解析に失敗した場合など
+                        writeToConsole('ファイルの読み込みに失敗しました: ' + (err.message || err));
+                    }
+                };
+                reader.onerror = function() {
+                    alert('ファイルの読み込みに失敗しました。');
+                };
+                reader.readAsText(file);
             });
 
             // 全角スペースを検出してハイライトするオーバーレイを定義

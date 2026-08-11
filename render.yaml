@@ -1,0 +1,43 @@
+# Render.com の Blueprint 定義（静的サイト）
+#
+# 目的：レスポンスヘッダ、特に Content-Security-Policy を設定すること。
+# このアプリはユーザーが用意したPythonをPyodide上で実行するため、ページから
+# 到達できる読み込み元・通信先をあらかじめ必要最小限に限定しておく。
+#
+# 注意：既にダッシュボードから作成済みのサービスがある場合、name が一致しないと
+# 新しいサービスが作られる。既存サービス名に合わせるか、同じヘッダを
+# ダッシュボードの Settings > Headers に手で登録すること。
+services:
+  - type: web
+    name: python-chaser-web
+    runtime: static
+    # ビルド不要（index.html と images/ をそのまま配信する）
+    buildCommand: "echo 'no build step'"
+    staticPublishPath: .
+    headers:
+      # 読み込み元・通信先を、実際に使用しているCDNだけに限定する。
+      # script-src の 'unsafe-eval' / 'wasm-unsafe-eval' は Pyodide が
+      # new Function と WebAssembly を使うため必須。
+      # 変更する場合は必ずデプロイ先で Pyodide の初期化と対戦の実行を確認すること
+      # （connect-src が不足すると初期化ごと失敗する）。
+      - path: /*
+        name: Content-Security-Policy
+        value: >-
+          default-src 'self';
+          script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
+          style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com;
+          font-src 'self' https://fonts.gstatic.com;
+          img-src 'self' data:;
+          connect-src 'self' https://cdn.jsdelivr.net;
+          worker-src 'self' blob:;
+          object-src 'none';
+          base-uri 'self';
+          form-action 'none';
+          frame-ancestors 'none'
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      # 外部へ遷移した場合にURLを漏らさない
+      - path: /*
+        name: Referrer-Policy
+        value: no-referrer
