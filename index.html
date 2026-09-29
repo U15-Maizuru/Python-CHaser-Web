@@ -1785,14 +1785,14 @@ class Client:
         return forwardRight[direction]
 
     # 指定方向の左前方向
-    def fowardLeft(self, direction):
-        fowardLeft = {
+    def forwardLeft(self, direction):
+        forwardLeft = {
             Up    : UpLeft,
             Down  : DownRight,
             Right : UpRight,
             Left  : DownLeft
         }
-        return fowardLeft[direction]
+        return forwardLeft[direction]
 
     # 指定方向の右後方向
     def backRight(self, direction):

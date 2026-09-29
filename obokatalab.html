@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>小保方研究室 (Obokata Lab)｜舞鶴工業高等専門学校 電気情報工学科</title>
+<meta name="description" content="舞鶴工業高等専門学校 電気情報工学科 小保方幸次教授の研究室ページ。所属・経歴・研究代表者(PI)を務めた研究課題・業績を掲載しています。">
+<meta name="keywords" content="小保方幸次,Obokata Lab,舞鶴高専,電気情報工学科,強化学習,アルゴリズム,計算幾何学,グラフ理論,画像処理,地理情報システム">
+<style>
+  :root{
+    --main-color:#0a3d62;
+    --accent-color:#1e6fa8;
+    --bg-color:#f7f9fb;
+    --card-bg:#ffffff;
+    --text-color:#222222;
+    --muted-color:#555555;
+    --border-color:#dfe6ec;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0;
+    padding:0;
+    font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+    background:var(--bg-color);
+    color:var(--text-color);
+    line-height:1.7;
+  }
+  header.site-header{
+    background:linear-gradient(135deg,var(--main-color),var(--accent-color));
+    color:#ffffff;
+    padding:2.5rem 1.2rem 2rem;
+    text-align:center;
+  }
+  header.site-header .lab-name{
+    font-size:2.1rem;
+    font-weight:700;
+    letter-spacing:0.03em;
+    margin:0 0 0.3rem;
+  }
+  header.site-header .lab-name-en{
+    font-size:1rem;
+    font-weight:400;
+    opacity:0.85;
+    margin:0 0 0.6rem;
+  }
+  header.site-header .affiliation{
+    font-size:0.95rem;
+    opacity:0.9;
+  }
+  main{
+    max-width:820px;
+    margin:0 auto;
+    padding:0 1.2rem 3rem;
+  }
+  section{
+    background:var(--card-bg);
+    border:1px solid var(--border-color);
+    border-radius:8px;
+    padding:1.6rem 1.8rem;
+    margin-top:1.6rem;
+  }
+  section h2{
+    font-size:1.15rem;
+    color:var(--main-color);
+    border-left:5px solid var(--accent-color);
+    padding-left:0.6rem;
+    margin:0 0 1rem;
+  }
+  dl.profile-dl{
+    display:grid;
+    grid-template-columns:8.5em 1fr;
+    row-gap:0.5rem;
+    column-gap:0.8rem;
+    margin:0;
+  }
+  dl.profile-dl dt{
+    color:var(--muted-color);
+    font-weight:600;
+  }
+  dl.profile-dl dd{
+    margin:0;
+  }
+  .keyword-list{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.5rem;
+    padding:0;
+    margin:0.6rem 0 0;
+    list-style:none;
+  }
+  .keyword-list li{
+    background:#eaf2f8;
+    color:var(--main-color);
+    border-radius:999px;
+    padding:0.25rem 0.9rem;
+    font-size:0.88rem;
+  }
+  .pi-highlight{
+    border:1px solid #cfe3f0;
+    background:#f3f9fd;
+  }
+  .pi-badge{
+    display:inline-block;
+    background:var(--accent-color);
+    color:#fff;
+    font-size:0.75rem;
+    font-weight:700;
+    letter-spacing:0.05em;
+    padding:0.15rem 0.6rem;
+    border-radius:4px;
+    margin-right:0.5rem;
+    vertical-align:middle;
+  }
+  .grant-item{
+    padding:0.9rem 0;
+    border-top:1px dashed var(--border-color);
+  }
+  .grant-item:first-of-type{ border-top:none; padding-top:0; }
+  .grant-title{
+    font-weight:700;
+    margin:0 0 0.3rem;
+  }
+  .grant-meta{
+    font-size:0.88rem;
+    color:var(--muted-color);
+  }
+  .pi-note{
+    font-size:0.85rem;
+    color:var(--muted-color);
+    margin-top:1rem;
+  }
+  ol.career-list, ol.pub-list, ol.talk-list{
+    padding-left:1.3rem;
+    margin:0;
+  }
+  ol.career-list li, ol.pub-list li, ol.talk-list li{
+    margin-bottom:0.6rem;
+  }
+  .career-period{
+    color:var(--muted-color);
+    font-size:0.88rem;
+    display:block;
+  }
+  .pub-authors{
+    color:var(--muted-color);
+    font-size:0.9rem;
+  }
+  .pub-venue{
+    font-size:0.9rem;
+  }
+  .reviewed-badge{
+    display:inline-block;
+    font-size:0.72rem;
+    color:#1e6fa8;
+    border:1px solid #1e6fa8;
+    border-radius:3px;
+    padding:0 0.35rem;
+    margin-left:0.4rem;
+  }
+  .external-link{
+    font-size:0.92rem;
+  }
+  address{
+    font-style:normal;
+  }
+  footer.site-footer{
+    text-align:center;
+    color:var(--muted-color);
+    font-size:0.8rem;
+    padding:2rem 1rem;
+  }
+  a{ color:var(--accent-color); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <p class="lab-name">小保方研究室</p>
+  <p class="lab-name-en">Obokata Lab</p>
+  <p class="affiliation">舞鶴工業高等専門学校 電気情報工学科</p>
+</header>
+
+<main>
+
+  <section id="profile">
+    <h2>基本情報</h2>
+    <dl class="profile-dl">
+      <dt>氏名</dt>
+      <dd>小保方 幸次（おぼかた こうじ / Koji OBOKATA）</dd>
+      <dt>所属・職名</dt>
+      <dd>舞鶴工業高等専門学校 電気情報工学科 教授</dd>
+      <dt>学位</dt>
+      <dd>博士（工学）（群馬大学）</dd>
+      <dt>E-mail</dt>
+      <dd>k.obokata［の後に @maizuru-ct.ac.jp を付加してください］</dd>
+      <dt>researchmap</dt>
+      <dd><a href="https://researchmap.jp/obokata" target="_blank" rel="noopener">https://researchmap.jp/obokata</a></dd>
+    </dl>
+    <ul class="keyword-list">
+      <li>強化学習</li>
+      <li>アルゴリズム</li>
+      <li>計算幾何学</li>
+      <li>グラフ理論</li>
+      <li>画像処理</li>
+      <li>画像検索</li>
+      <li>地理情報システム</li>
+    </ul>
+  </section>
+
+  <section id="pi" class="pi-highlight">
+    <h2>研究代表者(PI)としての研究課題</h2>
+    <div class="grant-item">
+      <p class="grant-title"><span class="pi-badge">PI</span>等高線表現を利用した画像検索手法に関する研究</p>
+      <p class="grant-meta">日本学術振興会 科学研究費助成事業　若手研究(B)　2002年度～2004年度　研究代表者</p>
+    </div>
+    <p class="pi-note">
+      ※ このほか研究分担者として参加した科学研究費課題（「入力に依存した専用回路による問題解法の高速化の研究」萌芽研究 2002-2004年度、「幾つかの画像関連問題の計算複雑度の解析と効率的な解決法の提案」特定領域研究 2004-2007年度、いずれも研究代表者：浅野哲夫）があります。詳細はresearchmapをご参照ください。
+    </p>
+  </section>
+
+  <section id="career">
+    <h2>経歴</h2>
+    <ol class="career-list">
+      <li><span class="career-period">2026年4月～現在</span>舞鶴工業高等専門学校 電気情報工学科　教授</li>
+      <li><span class="career-period">2017年4月～2026年3月</span>一関工業高等専門学校 未来創造工学科 情報・ソフトウェア系　教授</li>
+      <li><span class="career-period">2007年～2017年</span>一関工業高等専門学校 制御情報工学科　准教授</li>
+      <li><span class="career-period">2004年4月～2007年3月</span>一関工業高等専門学校 制御情報工学科　助教授</li>
+      <li><span class="career-period">2003年4月～2004年3月</span>桐生短期大学 生活科学科　講師</li>
+      <li><span class="career-period">1998年4月～2003年3月</span>北陸先端科学技術大学院大学 情報科学研究科　助手</li>
+    </ol>
+  </section>
+
+  <section id="papers">
+    <h2>論文</h2>
+    <ol class="pub-list">
+      <li>
+        小保方幸次, 鬼柳元樹, 佐藤健太, 下田将之, 千葉大輝.
+        <span class="pub-title">「地図を利用した情報共有を基柱とする街づくりのための合意形成システムの開発」</span><br>
+        <span class="pub-venue">GIS-理論と応用, 24(2), 115-124, 2016年.</span>
+      </li>
+      <li>
+        <span class="pub-authors">Asano T, Kawamura Y, Klette R, Obokata K.</span>
+        <span class="pub-title">"Digital Curve Approximation with Length Evaluation."</span><br>
+        <span class="pub-venue">IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences, 86(5), 987-994, 2003年.</span>
+      </li>
+      <li>
+        <span class="pub-authors">Asano T, Katoh N, Obokata K, Tokuyama T.</span>
+        <span class="pub-title">"Combinatorial and geometric problems related to digital halftoning."</span><br>
+        <span class="pub-venue">Geometry, Morphology, and Computational Imaging (LNCS 2616), 58-71, 2003年.<span class="reviewed-badge">査読有り</span></span>
+      </li>
+      <li>
+        <span class="pub-authors">Asano T, Katoh N, Obokata K, Tokuyama T.</span>
+        <span class="pub-title">"Matrix rounding under the Lp-discrepancy measure and its application to digital halftoning."</span><br>
+        <span class="pub-venue">SIAM Journal on Computing, 32(6), 1423-1435, 2003年.<span class="reviewed-badge">査読有り</span></span>
+      </li>
+      <li>
+        <span class="pub-authors">Asano T, Obokata K, Tokuyama T.</span>
+        <span class="pub-title">"On Detecting Digital Line Components in a Binary Image."</span><br>
+        <span class="pub-venue">IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences, 84(5), 1120-1129, 2001年.</span>
+      </li>
+      <li>
+        <span class="pub-authors">Asano T, Kawamura Y, Klette R, Obokata K.</span>
+        <span class="pub-title">"Minimum-length polygons in approximation sausages."</span><br>
+        <span class="pub-venue">LNCS 2059, 103-112, 2001年.</span>
+      </li>
+      <li>
+        <span class="pub-authors">Obokata K, Omori M, Motegi K, Igarashi Y.</span>
+        <span class="pub-title">"A lockout avoidance algorithm without using time-stamps for the k-exclusion problem."</span><br>
+        <span class="pub-venue">Computing and Combinatorics (LNCS 2108), 571-575, 2001年.<span class="reviewed-badge">査読有り</span></span>
+      </li>
+      <li>
+        <span class="pub-authors">Asano T, Fujikawa N, Katoh N, Matsui T, Nagamochi H, Obokata K, Tokuyama T.</span>
+        <span class="pub-title">"Digital Halftoning: Its Computational Complexity and Approximation Algorithms Based on Network Flow."</span><br>
+        <span class="pub-venue">Proc. 6th KOREA-JAPAN Joint Workshop on Algorithms and Computation, 21, 2001年.<span class="reviewed-badge">査読有り</span></span>
+      </li>
+      <li>
+        <span class="pub-authors">Iwasaki Y, Kajiwara Y, Obokata K, Igarashi Y.</span>
+        <span class="pub-title">"Independent spanning trees of chordal rings."</span><br>
+        <span class="pub-venue">Information Processing Letters, 69(3), 155-160, 1999年.<span class="reviewed-badge">査読有り</span></span>
+      </li>
+      <li>
+        <span class="pub-authors">Obokata K, Iwasaki Y, Bao F, Igarashi Y.</span>
+        <span class="pub-title">"Independent spanning trees of product graphs."</span><br>
+        <span class="pub-venue">Graph-Theoretic Concepts in Computer Science (LNCS 1197), 338-351, 1997年.<span class="reviewed-badge">査読有り</span></span>
+      </li>
+      <li>
+        <span class="pub-authors">Obokata K, Iwasaki Y, Bao F, Igarashi Y.</span>
+        <span class="pub-title">"Independent spanning trees of product graphs and their construction."</span><br>
+        <span class="pub-venue">IEICE Transactions on Fundamentals of Electronics, Communications and Computer Sciences, E79-A(11), 1894-1903, 1996年.</span>
+      </li>
+      <li>
+        <span class="pub-authors">Obokata K, Nishitani Y, Igarashi Y.</span>
+        <span class="pub-title">"A probably optimal embedding of hyper-rings in hypercubes."</span><br>
+        <span class="pub-venue">Information Processing Letters, 58(3), 117-122, 1996年.<span class="reviewed-badge">査読有り</span></span>
+      </li>
+      <li>
+        <span class="pub-authors">Altman T, Igarashi Y, Obokata K.</span>
+        <span class="pub-title">"Hyper-Ring Connection Machines."</span><br>
+        <span class="pub-venue">1994 IEEE Region 10's Ninth Annual International Conference, 290-294, 1994年.<span class="reviewed-badge">査読有り</span></span>
+      </li>
+    </ol>
+  </section>
+
+  <section id="talks">
+    <h2>学会発表・講演</h2>
+    <ol class="talk-list">
+      <li>「GAを用いた方形ピースジグソーパズルの組立てにおける交叉手法の改良」2015年10月.</li>
+      <li>「モンテカルロ法を用いたテンプレートマッチングの効率化」2015年10月.</li>
+      <li>「プログラミングコンテスト競技部門『よみがえれ、世界遺産』における対戦システムの構築」2011年.</li>
+      <li>「多彩色格子の同一色領域最大化問題へのアプローチ」2009年.</li>
+    </ol>
+    <p class="external-link">全ての業績はresearchmapをご覧ください：<a href="https://researchmap.jp/obokata" target="_blank" rel="noopener">https://researchmap.jp/obokata</a></p>
+  </section>
+
+  <section id="contact">
+    <h2>所在地・連絡先</h2>
+    <address>
+      〒625-8511　京都府舞鶴市字白屋234<br>
+      舞鶴工業高等専門学校　電気情報工学科<br>
+      E-mail：k.obokata［の後に @maizuru-ct.ac.jp を付加してください］
+    </address>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  &copy; Obokata Lab, Maizuru National College of Technology
+</footer>
+
+</body>
+</html>
